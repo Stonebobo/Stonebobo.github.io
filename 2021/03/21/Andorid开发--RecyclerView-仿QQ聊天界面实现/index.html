@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/earth512.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/earth32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/earth16.png">
+  <link rel="mask-icon" href="/images/earth.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"stonebobo.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言：看了郭霖先生的著作《第一行代码-第二版》决定自己动手实现一个，该篇博客包含了APP制作的全部流程，RecyclerView 视频教程RecyclerView 基础使用教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Andorid开发 | RecyclerView 仿QQ聊天界面实现">
+<meta property="og:url" content="https://stonebobo.github.io/2021/03/21/Andorid%E5%BC%80%E5%8F%91--RecyclerView-%E4%BB%BFQQ%E8%81%8A%E5%A4%A9%E7%95%8C%E9%9D%A2%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="LittleStone BLOG">
+<meta property="og:description" content="前言：看了郭霖先生的著作《第一行代码-第二版》决定自己动手实现一个，该篇博客包含了APP制作的全部流程，RecyclerView 视频教程RecyclerView 基础使用教程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/03/21/j9ialQO3e1gcYb5.gif">
+<meta property="og:image" content="https://i.loli.net/2021/03/21/U5TSjsHrNdBxPGO.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/21/fwMeIZuyndgDrWP.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/21/U8DwIxZCdqH4iOf.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/21/htifMuoVbC4S12a.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/21/cxltiysqgD92nFz.png">
+<meta property="article:published_time" content="2021-03-21T08:42:18.000Z">
+<meta property="article:modified_time" content="2021-03-21T08:51:27.810Z">
+<meta property="article:author" content="LittleStone">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="安卓开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/03/21/j9ialQO3e1gcYb5.gif">
+
+<link rel="canonical" href="https://stonebobo.github.io/2021/03/21/Andorid%E5%BC%80%E5%8F%91--RecyclerView-%E4%BB%BFQQ%E8%81%8A%E5%A4%A9%E7%95%8C%E9%9D%A2%E5%AE%9E%E7%8E%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Andorid开发 | RecyclerView 仿QQ聊天界面实现 | LittleStone BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">LittleStone BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">未来已来 始于现在</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">11</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://stonebobo.github.io/2021/03/21/Andorid%E5%BC%80%E5%8F%91--RecyclerView-%E4%BB%BFQQ%E8%81%8A%E5%A4%A9%E7%95%8C%E9%9D%A2%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.JPG">
+      <meta itemprop="name" content="LittleStone">
+      <meta itemprop="description" content="记录技术的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LittleStone BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Andorid开发 | RecyclerView 仿QQ聊天界面实现
+        </h1>
+
+        <div class="post-meta">
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-21 16:42:18 / 修改时间：16:51:27" itemprop="dateCreated datePublished" datetime="2021-03-21T16:42:18+08:00">2021-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>前言：看了郭霖先生的著作《第一行代码-第二版》决定自己动手实现一个，该篇博客包含了APP制作的全部流程，RecyclerView 视频教程<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13y4y1E7pF?p=22">RecyclerView 基础使用教程</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="RecyclerView-仿QQ聊天界面实现"><a href="#RecyclerView-仿QQ聊天界面实现" class="headerlink" title="RecyclerView 仿QQ聊天界面实现"></a>RecyclerView 仿QQ聊天界面实现</h2><h5 id="1-效果图"><a href="#1-效果图" class="headerlink" title="1. 效果图"></a>1. 效果图</h5><img src="https://i.loli.net/2021/03/21/j9ialQO3e1gcYb5.gif" alt="1" style="zoom:67%;">
+
+<h5 id="2-步骤"><a href="#2-步骤" class="headerlink" title="2. 步骤"></a>2. 步骤</h5><h6 id="2-1-材料准备"><a href="#2-1-材料准备" class="headerlink" title="2.1 材料准备"></a>2.1 材料准备</h6><p>​    在这里分享一个好用到炸裂的图库<a target="_blank" rel="noopener" href="https://www.iconfont.cn/">阿里巴巴矢量图标库</a> ,先注册，才可以下载里面的图片，从上述的演示图中 我们需要四个图片 </p>
+<ol>
+<li><p>男生头像</p>
+</li>
+<li><p>女生头像</p>
+</li>
+<li><p>左聊天气泡</p>
+</li>
+<li><p>右聊天气泡</p>
+<p>都可以在<a target="_blank" rel="noopener" href="https://www.iconfont.cn/">阿里巴巴矢量图标库</a> 找到 ，并下载在当前工程目录下的drawable文件夹下 <strong>PS：一定要是PNG格式</strong></p>
+</li>
+</ol>
+<h6 id="2-2-9图制作"><a href="#2-2-9图制作" class="headerlink" title="2.2 9图制作"></a>2.2 9图制作</h6><p>​    什么是9图？ 其实9图是安卓开发当中常用的一种图片格式(.9.png) ，这种图片有一个特点就是 他可以规定图片在被拉伸时，那一部分区域是可以被拉伸的，那一部分是放内容的，<strong>记住：左上 拉伸，右下内容</strong>，如何将PNG图片 转为.9.png格式的图片，在AndroidStudio中 右击PNG 图片就可以看到，<strong>注意：在创作完.9图片以后 需要把原来的图片删掉，不然AS会资源重复错误</strong>（个人觉得是因为 AS认为.9图和原来的图是一个资源）</p>
+<p><img src="https://i.loli.net/2021/03/21/U5TSjsHrNdBxPGO.png" alt="image-20210321163245580"></p>
+<img src="https://i.loli.net/2021/03/21/fwMeIZuyndgDrWP.png" alt="image-20210321163049337" style="zoom:67%;">
+
+<h6 id="2-3-布局代码"><a href="#2-3-布局代码" class="headerlink" title="2.3 布局代码"></a>2.3 布局代码</h6><ol>
+<li><p><code>activity_main</code> 布局</p>
+<ul>
+<li><p>效果图：<img src="https://i.loli.net/2021/03/21/U8DwIxZCdqH4iOf.png" alt="image-20210321163837502" style="zoom:67%;"></p>
+</li>
+<li><p>嵌套布局：整体就是一个<code>LinerLayout</code>中包含了<code>RecycleView</code>与两个<code>LinearLayout</code>，</p>
+<p><img src="https://i.loli.net/2021/03/21/htifMuoVbC4S12a.png" alt="image-20210321163946521"></p>
+</li>
+<li><p>源码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_margin</span>=<span class="string">&quot;3dp&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">&quot;vertical&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;androidx.recyclerview.widget.RecyclerView</span><br><span class="line">        android:id=&quot;@+id/rv&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;0dp&quot;</span><br><span class="line">        android:layout_weight=&quot;18&quot;/&gt;</span><br><span class="line">    &lt;LinearLayout</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;0dp&quot;</span><br><span class="line">        android:orientation=&quot;horizontal&quot;</span><br><span class="line">        android:layout_weight=&quot;1&quot;&gt;</span><br><span class="line">        &lt;ImageView</span><br><span class="line">            android:id=&quot;@+id/img_photo&quot;</span><br><span class="line">            android:layout_width=&quot;0dp&quot;</span><br><span class="line">            android:layout_height=&quot;match_parent&quot;</span><br><span class="line">            android:layout_weight=&quot;1&quot;</span><br><span class="line">            android:padding=&quot;8dp&quot;</span><br><span class="line">            android:src=&quot;@drawable/photo&quot;/&gt;</span><br><span class="line">        &lt;ImageView</span><br><span class="line">            android:id=&quot;@+id/img_camera&quot;</span><br><span class="line">            android:layout_width=&quot;0dp&quot;</span><br><span class="line">            android:layout_height=&quot;match_parent&quot;</span><br><span class="line">            android:layout_weight=&quot;1&quot;</span><br><span class="line">            android:padding=&quot;8dp&quot;</span><br><span class="line">            android:src=&quot;@drawable/camera&quot;/&gt;</span><br><span class="line">        &lt;ImageView</span><br><span class="line">            android:id=&quot;@+id/img_express&quot;</span><br><span class="line">            android:layout_width=&quot;0dp&quot;</span><br><span class="line">            android:layout_height=&quot;match_parent&quot;</span><br><span class="line">            android:padding=&quot;8dp&quot;</span><br><span class="line">            android:layout_weight=&quot;1&quot;</span><br><span class="line">            android:src=&quot;@drawable/expression&quot;/&gt;</span><br><span class="line">        &lt;ImageView</span><br><span class="line">            android:id=&quot;@+id/img_add&quot;</span><br><span class="line">            android:layout_width=&quot;0dp&quot;</span><br><span class="line">            android:layout_height=&quot;match_parent&quot;</span><br><span class="line">            android:layout_weight=&quot;1&quot;</span><br><span class="line">            android:padding=&quot;8dp&quot;</span><br><span class="line">            android:src=&quot;@drawable/add&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line">    &lt;LinearLayout</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:orientation=&quot;horizontal&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;EditText</span><br><span class="line">            android:id=&quot;@+id/edit&quot;</span><br><span class="line">            android:layout_width=&quot;0dp&quot;</span><br><span class="line">            android:layout_height=&quot;match_parent&quot;</span><br><span class="line">            android:layout_weight=&quot;4&quot;</span><br><span class="line">            android:layout_marginLeft=&quot;5dp&quot;</span><br><span class="line">            android:hint=&quot;要发送的话&quot;</span><br><span class="line">            android:lines=&quot;2&quot;/&gt;</span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=&quot;@+id/btn_send&quot;</span><br><span class="line">            android:layout_width=&quot;0dp&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_weight=&quot;1&quot;</span><br><span class="line">            android:text=&quot;发送&quot; /&gt;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>RecycleView中<code>item_layout</code>布局</p>
+<ul>
+<li><p>效果图：</p>
+</li>
+<li><p>布局格式：整体我们采用了<code>RelativeLayout</code>，又嵌套了两个<code>LinearLayout</code> ，<code>LinearLayout</code>中又包含了 头像与 聊天框</p>
+<p><img src="https://i.loli.net/2021/03/21/cxltiysqgD92nFz.png" alt="image-20210321164504456"></p>
+</li>
+<li><p>源码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:padding</span>=<span class="string">&quot;10dp&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;LinearLayout</span><br><span class="line">        android:id=&quot;@+id/linear_left&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_alignParentLeft=&quot;true&quot;</span><br><span class="line">        android:orientation=&quot;horizontal&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;ImageView</span><br><span class="line">            android:id=&quot;@+id/head_left&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:src=&quot;@drawable/boy_head&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;LinearLayout</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_marginLeft=&quot;3dp&quot;</span><br><span class="line">            android:background=&quot;@drawable/left&quot;&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=&quot;@+id/msg_left&quot;</span><br><span class="line">                android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">                android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                android:layout_gravity=&quot;center&quot; /&gt;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;LinearLayout</span><br><span class="line">        android:id=&quot;@+id/linear_right&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_below=&quot;@+id/linear_left&quot;</span><br><span class="line">        android:layout_alignParentRight=&quot;true&quot;&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &lt;LinearLayout</span><br><span class="line"></span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_marginLeft=&quot;3dp&quot;</span><br><span class="line">            android:layout_toLeftOf=&quot;@+id/head_right&quot;</span><br><span class="line">            android:background=&quot;@drawable/right&quot;&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=&quot;@+id/msg_right&quot;</span><br><span class="line">                android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">                android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                android:layout_gravity=&quot;center&quot; /&gt;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        &lt;ImageView</span><br><span class="line">            android:id=&quot;@+id/head_right&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_alignParentRight=&quot;true&quot;</span><br><span class="line">            android:src=&quot;@drawable/girl_head&quot; /&gt;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h6 id="2-4-后台代码-看不懂-就去看前言中-的视频"><a href="#2-4-后台代码-看不懂-就去看前言中-的视频" class="headerlink" title="2.4 后台代码(看不懂 就去看前言中 的视频)"></a>2.4 后台代码(看不懂 就去看前言中 的视频)</h6><ol>
+<li><p>Message类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Message</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> TYPE_RECEIVE = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> TYPE_SEND = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> type;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Message</span><span class="params">(String content, <span class="keyword">int</span> type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">        <span class="keyword">this</span>.type = type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContent</span><span class="params">(String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setType</span><span class="params">(<span class="keyword">int</span> type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.type = type;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Adapter类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAdapter</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">Adapter</span>&lt;<span class="title">MyAdapter</span>.<span class="title">ViewHolder</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Message&gt; data;</span><br><span class="line">    <span class="keyword">private</span> Context context;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyAdapter</span><span class="params">(List&lt;Message&gt; data, Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">        <span class="keyword">this</span>.context = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@NonNull</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> MyAdapter.<span class="function">ViewHolder <span class="title">onCreateViewHolder</span><span class="params">(<span class="meta">@NonNull</span> ViewGroup parent, <span class="keyword">int</span> viewType)</span> </span>&#123;</span><br><span class="line">        View view = View.inflate(context, R.layout.item_layout, <span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ViewHolder(view);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBindViewHolder</span><span class="params">(<span class="meta">@NonNull</span> MyAdapter.ViewHolder holder, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        Message message = data.get(position);</span><br><span class="line">        <span class="keyword">if</span> (message.getType() == Message.TYPE_RECEIVE) &#123;</span><br><span class="line">            holder.linear_left.setVisibility(View.VISIBLE);</span><br><span class="line">            holder.linear_right.setVisibility(View.GONE);</span><br><span class="line">            holder.left_text.setText(message.getContent());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            holder.linear_left.setVisibility(View.GONE);</span><br><span class="line">            holder.linear_right.setVisibility(View.VISIBLE);</span><br><span class="line">            holder.right_text.setText(message.getContent());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getItemCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> data == <span class="keyword">null</span> ? <span class="number">0</span> : data.size();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> LinearLayout linear_left;</span><br><span class="line">        <span class="keyword">private</span> LinearLayout linear_right;</span><br><span class="line">        <span class="keyword">private</span> TextView left_text;</span><br><span class="line">        <span class="keyword">private</span> TextView right_text;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ViewHolder</span><span class="params">(<span class="meta">@NonNull</span> View itemView)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(itemView);</span><br><span class="line">            linear_left = itemView.findViewById(R.id.linear_left);</span><br><span class="line">            linear_right = itemView.findViewById(R.id.linear_right);</span><br><span class="line">            left_text = itemView.findViewById(R.id.msg_left);</span><br><span class="line">            right_text = itemView.findViewById(R.id.msg_right);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>activity_main 类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> EditText editText;</span><br><span class="line">    <span class="keyword">private</span> Button btn_send;</span><br><span class="line">    <span class="keyword">private</span> RecyclerView recyclerView;</span><br><span class="line">    <span class="keyword">private</span> ImageView img_add;</span><br><span class="line">    <span class="keyword">private</span> ImageView img_camera;</span><br><span class="line">    <span class="keyword">private</span> ImageView img_photo;</span><br><span class="line">    <span class="keyword">private</span> ImageView img_express;</span><br><span class="line">    <span class="keyword">private</span> MyAdapter adapter;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Message&gt; data = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        ActionBar actionBar = getSupportActionBar();</span><br><span class="line">        <span class="keyword">if</span> (actionBar != <span class="keyword">null</span>) &#123;</span><br><span class="line">            actionBar.hide();</span><br><span class="line">        &#125;</span><br><span class="line">        bindView();</span><br><span class="line">        init_data();</span><br><span class="line">        LinearLayoutManager linearLayoutManager = <span class="keyword">new</span> LinearLayoutManager(<span class="keyword">this</span>);</span><br><span class="line">        recyclerView.setLayoutManager(linearLayoutManager);</span><br><span class="line"></span><br><span class="line">        adapter = <span class="keyword">new</span> MyAdapter(data, <span class="keyword">this</span>);</span><br><span class="line">        recyclerView.setAdapter(adapter);</span><br><span class="line"></span><br><span class="line">        btn_send.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                String s = editText.getText().toString();</span><br><span class="line">                <span class="keyword">if</span> (s.equals(<span class="string">&quot;&quot;</span>) == <span class="keyword">false</span>) &#123;</span><br><span class="line">                    Message message = <span class="keyword">new</span> Message(s, Message.TYPE_SEND);</span><br><span class="line">                    data.add(message);</span><br><span class="line">                    <span class="comment">//当有新消息时，刷新RecyclerView</span></span><br><span class="line">                    adapter.notifyItemInserted(data.size() - <span class="number">1</span>);</span><br><span class="line">                    <span class="comment">//将屏幕滚动到最新消息</span></span><br><span class="line">                    recyclerView.scrollToPosition(data.size() - <span class="number">1</span>);</span><br><span class="line">                    editText.setText(<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    Toast.makeText(MainActivity.<span class="keyword">this</span>, <span class="string">&quot;发送消息不能为空！&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bindView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        editText = findViewById(R.id.edit);</span><br><span class="line">        btn_send = findViewById(R.id.btn_send);</span><br><span class="line">        recyclerView = findViewById(R.id.rv);</span><br><span class="line">        img_add = findViewById(R.id.img_add);</span><br><span class="line">        img_camera = findViewById(R.id.img_camera);</span><br><span class="line">        img_express = findViewById(R.id.img_express);</span><br><span class="line">        img_photo = findViewById(R.id.img_photo);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init_data</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Message meg1 = <span class="keyword">new</span> Message(<span class="string">&quot;Hello, 我叫白文磊&quot;</span>, Message.TYPE_RECEIVE);</span><br><span class="line">        data.add(meg1);</span><br><span class="line">        Message meg2 = <span class="keyword">new</span> Message(<span class="string">&quot;Hello, 我叫郭涵博&quot;</span>, Message.TYPE_SEND);</span><br><span class="line">        data.add(meg2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="3-源码分享"><a href="#3-源码分享" class="headerlink" title="3. 源码分享"></a>3. 源码分享</h5>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>LittleStone
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://stonebobo.github.io/2021/03/21/Andorid%E5%BC%80%E5%8F%91--RecyclerView-%E4%BB%BFQQ%E8%81%8A%E5%A4%A9%E7%95%8C%E9%9D%A2%E5%AE%9E%E7%8E%B0/" title="Andorid开发 | RecyclerView 仿QQ聊天界面实现">https://stonebobo.github.io/2021/03/21/Andorid开发--RecyclerView-仿QQ聊天界面实现/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/" rel="tag"># 安卓开发</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/19/ListView%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E8%B0%83%E4%BC%98/" rel="prev" title="ListView的使用与调优">
+      <i class="fa fa-chevron-left"></i> ListView的使用与调优
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RecyclerView-%E4%BB%BFQQ%E8%81%8A%E5%A4%A9%E7%95%8C%E9%9D%A2%E5%AE%9E%E7%8E%B0"><span class="nav-text">RecyclerView 仿QQ聊天界面实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="nav-text">1. 效果图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E6%AD%A5%E9%AA%A4"><span class="nav-text">2. 步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-%E6%9D%90%E6%96%99%E5%87%86%E5%A4%87"><span class="nav-text">2.1 材料准备</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-9%E5%9B%BE%E5%88%B6%E4%BD%9C"><span class="nav-text">2.2 9图制作</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-3-%E5%B8%83%E5%B1%80%E4%BB%A3%E7%A0%81"><span class="nav-text">2.3 布局代码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-4-%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81-%E7%9C%8B%E4%B8%8D%E6%87%82-%E5%B0%B1%E5%8E%BB%E7%9C%8B%E5%89%8D%E8%A8%80%E4%B8%AD-%E7%9A%84%E8%A7%86%E9%A2%91"><span class="nav-text">2.4 后台代码(看不懂 就去看前言中 的视频)</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E6%BA%90%E7%A0%81%E5%88%86%E4%BA%AB"><span class="nav-text">3. 源码分享</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="LittleStone"
+      src="/images/touxiang.JPG">
+  <p class="site-author-name" itemprop="name">LittleStone</p>
+  <div class="site-description" itemprop="description">记录技术的点点滴滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Stonebobo" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Stonebobo" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:baiwenlei090504@gmail.com" title="E-Mail → mailto:baiwenlei090504@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LittleStone</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">33k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
