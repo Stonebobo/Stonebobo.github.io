@@ -23,17 +23,17 @@
   <meta name="description" content="在 JAVA 语言中容易被忽略的问题 摘自于Leetcode java突击面试宝典，仅供个人学习参考，转载请注明出处！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java易错点">
-<meta property="og:url" content="https://stonebobo.github.io/2021/03/15/java%E6%98%93%E9%94%99%E7%82%B9/index.html">
+<meta property="og:url" content="https://stonebobo.github.io/2021/03/26/java%E6%98%93%E9%94%99%E7%82%B9/index.html">
 <meta property="og:site_name" content="LittleStone BLOG">
 <meta property="og:description" content="在 JAVA 语言中容易被忽略的问题 摘自于Leetcode java突击面试宝典，仅供个人学习参考，转载请注明出处！">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-03-15T11:41:33.000Z">
-<meta property="article:modified_time" content="2021-03-16T13:24:47.153Z">
+<meta property="article:published_time" content="2021-03-26T11:41:33.000Z">
+<meta property="article:modified_time" content="2021-03-26T09:34:04.533Z">
 <meta property="article:author" content="LittleStone">
 <meta property="article:tag" content="JAVA">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://stonebobo.github.io/2021/03/15/java%E6%98%93%E9%94%99%E7%82%B9/">
+<link rel="canonical" href="https://stonebobo.github.io/2021/03/26/java%E6%98%93%E9%94%99%E7%82%B9/">
 
 
 <script id="page-configurations">
@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://stonebobo.github.io/2021/03/15/java%E6%98%93%E9%94%99%E7%82%B9/">
+    <link itemprop="mainEntityOfPage" href="https://stonebobo.github.io/2021/03/26/java%E6%98%93%E9%94%99%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.JPG">
@@ -185,16 +185,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-03-15 19:41:33" itemprop="dateCreated datePublished" datetime="2021-03-15T19:41:33+08:00">2021-03-15</time>
+              <time title="创建时间：2021-03-26 19:41:33 / 修改时间：17:34:04" itemprop="dateCreated datePublished" datetime="2021-03-26T19:41:33+08:00">2021-03-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-16 21:24:47" itemprop="dateModified" datetime="2021-03-16T21:24:47+08:00">2021-03-16</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -218,14 +212,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>509</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -262,7 +256,92 @@
 <p>被 <code>static</code>修饰的方法，只能访问静态的方法/变量 ，不能访问实例的类成员</p>
 <p>而 实例方法 既可以访问 实例的类成员，也可以访问静态的类成员</p>
 </li>
-<li></li>
+</ol>
+<h4 id="3-重载的条件"><a href="#3-重载的条件" class="headerlink" title="3. 重载的条件"></a>3. 重载的条件</h4><ol>
+<li>函数名必须相同</li>
+<li>参数列表必须不同（个数不同，类型不同，参数类型的排列顺序不同）</li>
+<li>返回类型 可以相同 可以不同</li>
+<li>仅 返回类型不同 不能构成方法的重载</li>
+<li>重载是发生在编译时，因为编译器可以根据参数的类型类选择使用哪种方法</li>
+</ol>
+<h4 id="4-重写"><a href="#4-重写" class="headerlink" title="4. 重写"></a>4. 重写</h4><p>​        重载 与 重写 名字相似但  两者是完全不同的关系，</p>
+<ol>
+<li>方法的重写 是描述子类与父类之间的，而重载指的的在一个类中</li>
+<li>重写的方法必须要和父类保持一致，包括返回值类型，方法名，参数列表</li>
+</ol>
+<h4 id="5-类中初始化的顺序"><a href="#5-类中初始化的顺序" class="headerlink" title="5. 类中初始化的顺序"></a>5. 类中初始化的顺序</h4><ol>
+<li><p>静态属性    初始化</p>
+</li>
+<li><p>静态方法块初始化</p>
+</li>
+<li><p>普通属性    初始化</p>
+</li>
+<li><p>普通方法块初始化</p>
+</li>
+<li><p>构造函数    初始化<br> 例：</p>
+</li>
+</ol>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClass</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">//静态属性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String staticField = getStaticField();</span><br><span class="line">    <span class="comment">//静态方法块</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(staticField);</span><br><span class="line">        System.out.println(<span class="string">&quot;静态方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//普通属性</span></span><br><span class="line">    <span class="keyword">private</span> String field=getField();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//普通方法块</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;普通方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//构造方法</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyClass</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;构造函数初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getField</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        String filed = <span class="string">&quot;普通属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> filed;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getStaticField</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        String statiFiled = <span class="string">&quot;静态属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> statiFiled;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        MyClass myClass=<span class="keyword">new</span> MyClass();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//打印结果</span></span><br><span class="line">    静态属性初始化</span><br><span class="line">	静态方法块初始化</span><br><span class="line">	普通方法块初始化</span><br><span class="line">	构造函数初始化</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="6-Static"><a href="#6-Static" class="headerlink" title="6. Static"></a>6. Static</h4><ol>
+<li><p>static 修饰 成员变量 称为 类变量</p>
+<p>可以直接通过 <strong>类名.类变量名</strong> 访问或修改 不需要通过对象访问</p>
+</li>
+<li><p>static 修饰 成员函数 称为 静态方法</p>
+<ul>
+<li>可以直接通过 <strong>类名.方法名</strong> 调用 ，不需要通过对象访问</li>
+<li>静态方法 <strong>只能</strong>访问静态的成员变量 或者静态的方法</li>
+<li>静态方法中 不能含有 <code>this</code> 关键字</li>
+</ul>
+</li>
+<li><p>static 修饰 内部类（static只能修饰内部类）了解</p>
+<p>一般内部类的定义都是如下形式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String name = <span class="string">&quot;Outter&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> //只有<span class="title">public</span> 修饰符</span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Inner为测试而生！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种内部类的实例化方法 是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Outter.Inner inner=<span class="keyword">new</span> Outter().<span class="function">new <span class="title">Inner</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>而被<code>static</code> 修饰了的内部类 是如下形式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String name = <span class="string">&quot;Outter&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticInner</span> //内部类被 <span class="title">static</span>修饰</span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;StaticInner为测试而生！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>被<code>static</code>修饰的实例化方法是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Outter.StaticInner staticInner=<span class="keyword">new</span> Outter.StaticInner();</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="7-Final"><a href="#7-Final" class="headerlink" title="7. Final"></a>7. Final</h4><ol>
+<li><p>final 修饰 类 </p>
+<p>表示该类不可被继承，并且该类的成员方法 也会被隐式的指定为final，成员变量 根据需要 自己设置是否被final 修饰</p>
+</li>
+<li><p>final 修饰 方法</p>
+<p>表示这个方法不能被子类重写 </p>
+</li>
+<li><p>final 修饰 变量</p>
+<ul>
+<li>修饰基本数据类型 表示该值不可被修改</li>
+<li>修饰引用数据类型  表示其对其初始化以后便不能再能其指向另一个对象</li>
+</ul>
+</li>
+</ol>
+<h4 id="8-接口"><a href="#8-接口" class="headerlink" title="8. 接口"></a>8. 接口</h4><ol>
+<li>包含的方法<ul>
+<li>抽象方法（只有函数的声明）</li>
+<li>默认方法</li>
+<li>静态方法</li>
+<li>私有方法</li>
+</ul>
+</li>
+<li>接口只能使用 <code>public</code> <code>defaylt</code> 修饰</li>
+<li>接口不能被实例化</li>
+<li>接口的实现类 必须将接口中的抽象方法重写 否则 该类为抽象类</li>
+</ol>
+<h4 id="9-抽象类"><a href="#9-抽象类" class="headerlink" title="9. 抽象类"></a>9. 抽象类</h4><p>抽象类 是一种抽象能力弱于接口的类 </p>
+<p>特征：</p>
+<ol>
+<li>包含抽象方法的类 一定是抽象类</li>
+<li>抽象类不一定包含 抽象方法</li>
+<li>在抽象类中 还可以定义 成员变量 成员函数 构造方法 静态变量 静态方法</li>
+<li>抽象类不能被实例化 </li>
 </ol>
 
     </div>
@@ -279,7 +358,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://stonebobo.github.io/2021/03/15/java%E6%98%93%E9%94%99%E7%82%B9/" title="java易错点">https://stonebobo.github.io/2021/03/15/java易错点/</a>
+    <a href="https://stonebobo.github.io/2021/03/26/java%E6%98%93%E9%94%99%E7%82%B9/" title="java易错点">https://stonebobo.github.io/2021/03/26/java易错点/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -299,13 +378,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/03/13/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" rel="prev" title="软件工程 | 核心概念">
-      <i class="fa fa-chevron-left"></i> 软件工程 | 核心概念
+    <a href="/2021/03/21/Andorid%E5%BC%80%E5%8F%91--RecyclerView-%E4%BB%BFQQ%E8%81%8A%E5%A4%A9%E7%95%8C%E9%9D%A2%E5%AE%9E%E7%8E%B0/" rel="prev" title="Andorid开发 | RecyclerView 仿QQ聊天界面实现">
+      <i class="fa fa-chevron-left"></i> Andorid开发 | RecyclerView 仿QQ聊天界面实现
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/03/15/Linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="Linux学习笔记">
-      Linux学习笔记 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -364,7 +440,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-JAVA-%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%AE%B9%E6%98%93%E8%A2%AB%E5%BF%BD%E7%95%A5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">在 JAVA 语言中容易被忽略的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">1. 基本的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="nav-text">2. 面向对象</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-JAVA-%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%AE%B9%E6%98%93%E8%A2%AB%E5%BF%BD%E7%95%A5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">在 JAVA 语言中容易被忽略的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">1. 基本的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="nav-text">2. 面向对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E9%87%8D%E8%BD%BD%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="nav-text">3. 重载的条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E9%87%8D%E5%86%99"><span class="nav-text">4. 重写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%B1%BB%E4%B8%AD%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="nav-text">5. 类中初始化的顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Static"><span class="nav-text">6. Static</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Final"><span class="nav-text">7. Final</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E6%8E%A5%E5%8F%A3"><span class="nav-text">8. 接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-text">9. 抽象类</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -440,12 +516,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">33k</span>
+    <span title="站点总字数">35k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">30 分钟</span>
+    <span title="站点阅读时长">31 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
