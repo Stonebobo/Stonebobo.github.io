@@ -158,128 +158,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://stonebobo.github.io/2021/04/15/NavigationController%20%E7%BB%88%E6%8E%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.JPG">
-      <meta itemprop="name" content="LittleStone">
-      <meta itemprop="description" content="记录技术的点点滴滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="LittleStone BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/15/NavigationController%20%E7%BB%88%E6%8E%A2/" class="post-title-link" itemprop="url">终探 NavigationController ----页面共享数据更简单</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-04-15 15:37:18 / 修改时间：22:09:00" itemprop="dateCreated datePublished" datetime="2021-04-15T15:37:18+08:00">2021-04-15</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">安卓开发</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>8.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>在 <a target="_blank" rel="noopener" href="https://littlestone.space/2021/04/15/NavigationController%20%E5%86%8D%E6%8E%A2/">再探 NavigationController —-页面传递数据更简单</a>中，我们通过使用Bundle来传递数据，在本节 我们将总结 多个Fragment 如何共享数据，其实就是ViewModel 与 Fragment的结合</p>
-</blockquote>
-<h4 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h4><img src="https://i.loli.net/2021/04/15/qE3cJyRDCLrO8nY.gif" alt="5" style="zoom:67%;">
-
-<h4 id="分析上述效果图"><a href="#分析上述效果图" class="headerlink" title="分析上述效果图"></a>分析上述效果图</h4><p>我们需要将界面一的值 传到界面二，界面二对值进行+1 或者 -1 将更新后的值 传回 界面一，我们可以通过上一节讲的Buddle 来进行传递数据，也可以通过我们之前所讲的ViewModel 来存放这个数据，<strong>这时候就不是界面之间传值，而是两个界面对一个数据的共同访问</strong>，</p>
-<p>我们之间学到的Viewmodel，dataBingding都是在Activity中实例化，在Fragment中实例化 又有所不同，见本文最后 总结部分</p>
-<h4 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h4><h5 id="1-实现MyViewModel类"><a href="#1-实现MyViewModel类" class="headerlink" title="1. 实现MyViewModel类"></a>1. 实现MyViewModel类</h5><p>这里和普通的ViewModel使用没有差别</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyViewModel</span> <span class="keyword">extends</span> <span class="title">ViewModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> MutableLiveData&lt;Integer&gt; number;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> MutableLiveData&lt;Integer&gt; <span class="title">getNumber</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (number == <span class="keyword">null</span>) &#123;</span><br><span class="line">            number = <span class="keyword">new</span> MutableLiveData&lt;&gt;();</span><br><span class="line">            number.setValue(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> number;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        number.setValue(number.getValue() + x);</span><br><span class="line">        <span class="keyword">if</span> (number.getValue() &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            number.setValue(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-编写两个Fragment-布局-以及-对应的类"><a href="#2-编写两个Fragment-布局-以及-对应的类" class="headerlink" title="2. 编写两个Fragment 布局 以及 对应的类"></a>2. 编写两个Fragment 布局 以及 对应的类</h5><p>布局资源</p>
-<p>FragmentHome xml</p>
-<p>要注意 TextView 中的Text  需要String类型 </p>
-<img src="/2021/04/15/NavigationController%20%E7%BB%88%E6%8E%A2/Users/LittleStone/AppData/Roaming/Typora/typora-user-images/image-20210415213840554.png" alt="image-20210415213840554" style="zoom:50%;">
-
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">layout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">        &lt;variable</span><br><span class="line">            name=&quot;data&quot;</span><br><span class="line">            type=&quot;com.littlestone.navigationpractice3.MyViewModel&quot; /&gt;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;androidx.constraintlayout.widget.ConstraintLayout</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot;</span><br><span class="line">        tools:context=&quot;.HomeFragment&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:id=&quot;@+id/textView&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            注意这里 需要将Int转String</span><br><span class="line">            android:text=&quot;@&#123;String.valueOf(data.number)&#125;&quot;</span><br><span class="line">            android:textSize=&quot;30sp&quot;</span><br><span class="line">            app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintHorizontal_bias=&quot;0.526&quot;</span><br><span class="line">            app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintVertical_bias=&quot;0.154&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;SeekBar</span><br><span class="line">            android:id=&quot;@+id/seekBar&quot;</span><br><span class="line">            android:layout_width=&quot;0dp&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:max=&quot;10&quot;</span><br><span class="line">            app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintHorizontal_bias=&quot;0.502&quot;</span><br><span class="line">            app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintVertical_bias=&quot;0.308&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=&quot;@+id/button&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:text=&quot;Button&quot;</span><br><span class="line">            这里并没有 执行Viewmodel中的方法，是因为 这个按钮并不与值相关，只是切换界面的</span><br><span class="line">            app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintVertical_bias=&quot;0.443&quot; /&gt;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>FragmentHome.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HomeFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> MyViewModel myViewModel;</span><br><span class="line">    <span class="keyword">private</span> FragmentHomeBinding binding;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HomeFragment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Required empty public constructor</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container,</span></span></span><br><span class="line"><span class="function"><span class="params">                             Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">        <span class="comment">//*******************************注意***************************************</span></span><br><span class="line">        myViewModel = <span class="keyword">new</span> ViewModelProvider(getActivity()).get(MyViewModel.class);</span><br><span class="line">        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, <span class="keyword">false</span>);</span><br><span class="line">        <span class="comment">//*******************************注意***************************************</span></span><br><span class="line"></span><br><span class="line">        binding.setData(myViewModel);</span><br><span class="line">        binding.setLifecycleOwner(getActivity());</span><br><span class="line"></span><br><span class="line">        binding.seekBar.setProgress(myViewModel.getNumber().getValue());</span><br><span class="line">        binding.seekBar.setOnSeekBarChangeListener(<span class="keyword">new</span> SeekBar.OnSeekBarChangeListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgressChanged</span><span class="params">(SeekBar seekBar, <span class="keyword">int</span> progress, <span class="keyword">boolean</span> fromUser)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//</span></span><br><span class="line">                myViewModel.getNumber().setValue(progress);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStartTrackingTouch</span><span class="params">(SeekBar seekBar)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStopTrackingTouch</span><span class="params">(SeekBar seekBar)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        binding.button.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                NavController controller = Navigation.findNavController(v);</span><br><span class="line">                controller.navigate(R.id.action_homeFragment_to_detailFragment);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> binding.getRoot();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>第二个界面</p>
-<img src="https://i.loli.net/2021/04/15/m6MoXQTBHZFqPSa.png" alt="image-20210415220209499" style="zoom:50%;">
-
-<p>这里有两个对数据进行更新的Button，所以这两个Button需要执行Viewmodel中的add函数，另一个Button事件由Fragment负责</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">layout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">        &lt;variable</span><br><span class="line">            name=&quot;data&quot;</span><br><span class="line">            type=&quot;com.littlestone.navigationpractice3.MyViewModel&quot; /&gt;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;androidx.constraintlayout.widget.ConstraintLayout</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot;</span><br><span class="line">        tools:context=&quot;.DetailFragment&quot;&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:id=&quot;@+id/textView2&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:text=&quot;@&#123;String.valueOf(data.number)&#125;&quot;</span><br><span class="line">            android:textSize=&quot;36sp&quot;</span><br><span class="line">            app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintHorizontal_bias=&quot;0.498&quot;</span><br><span class="line">            app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintVertical_bias=&quot;0.243&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=&quot;@+id/button2&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:text=&quot;+1&quot;</span><br><span class="line">                 ********************************注意******************************</span><br><span class="line">            android:onClick=&quot;@&#123;()-&gt;data.add(1)&#125;&quot;</span><br><span class="line">            android:textSize=&quot;18sp&quot;</span><br><span class="line">            app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintHorizontal_bias=&quot;0.27&quot;</span><br><span class="line">            app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintVertical_bias=&quot;0.43&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=&quot;@+id/button3&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:text=&quot;-1&quot;</span><br><span class="line">                ********************************注意******************************</span><br><span class="line">            android:onClick=&quot;@&#123;()-&gt;data.add(-1)&#125;&quot;</span><br><span class="line">            android:textSize=&quot;18sp&quot;</span><br><span class="line">            app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintHorizontal_bias=&quot;0.738&quot;</span><br><span class="line">            app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintVertical_bias=&quot;0.43&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=&quot;@+id/button4&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:text=&quot;返回&quot;</span><br><span class="line">            app:layout_constraintBottom_toBottomOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintEnd_toEndOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintStart_toStartOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintTop_toTopOf=&quot;parent&quot;</span><br><span class="line">            app:layout_constraintVertical_bias=&quot;0.579&quot; /&gt;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="3-创建DataBinding-，并修改Fragment-布局-文件"><a href="#3-创建DataBinding-，并修改Fragment-布局-文件" class="headerlink" title="3. 创建DataBinding ，并修改Fragment 布局 文件"></a>3. 创建DataBinding ，并修改Fragment 布局 文件</h5><p>代码 见上</p>
-<h5 id="4-创建NavGraph"><a href="#4-创建NavGraph" class="headerlink" title="4. 创建NavGraph"></a>4. 创建NavGraph</h5><p>右击<code>res</code>–<code>New</code>–Android Resource File ，在Resource Type中 选择 Navigation </p>
-<img src="https://i.loli.net/2021/04/15/YJiSOMDZ9V8vU1T.png" alt="image-20210415220745535" style="zoom:50%;">
-
-<h5 id="5-在Activity-main-layout中-添加-NavHostFragment"><a href="#5-在Activity-main-layout中-添加-NavHostFragment" class="headerlink" title="5.在Activity main layout中 添加 NavHostFragment"></a>5.在Activity main layout中 添加 NavHostFragment</h5><p><img src="https://i.loli.net/2021/04/15/Awh1lBMDma3o7OU.png" alt="image-20210415220847775"></p>
-<h5 id="6-在Fragment类中-实例化MyViewModel类-，与-DataBinding类"><a href="#6-在Fragment类中-实例化MyViewModel类-，与-DataBinding类" class="headerlink" title="6.在Fragment类中 实例化MyViewModel类 ，与 DataBinding类"></a>6.在Fragment类中 实例化MyViewModel类 ，与 DataBinding类</h5><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><h5 id="1-不论是在Activity，还是Fragment-对于ViewModel的初始化是大部分一样的，"><a href="#1-不论是在Activity，还是Fragment-对于ViewModel的初始化是大部分一样的，" class="headerlink" title="1.不论是在Activity，还是Fragment ,对于ViewModel的初始化是大部分一样的，"></a>1.不论是在Activity，还是Fragment ,对于ViewModel的初始化是大部分一样的，</h5><p>有一点需要注意 就是ViewModelProvider 中的参数 Fragment是getActivity(),而 Activity直接就是this</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myViewModel = <span class="keyword">new</span> ViewModelProvider(<span class="keyword">this</span>).get(MyViewModel.class);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myViewModel = <span class="keyword">new</span> ViewModelProvider(getActivity()).get(MyViewModel.class);</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-对于Databinding的初始化-是不一样的"><a href="#2-对于Databinding的初始化-是不一样的" class="headerlink" title="2. 对于Databinding的初始化 是不一样的"></a>2. 对于Databinding的初始化 是不一样的</h5><p>对于Activity：在Oncreate中写</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">binding = DataBindingUtil.setContentView(<span class="keyword">this</span>,R.layout.activity_main);</span><br><span class="line">binding.setData(myViewModel);</span><br><span class="line">binding.setLifecycleOwner(<span class="keyword">this</span>);</span><br></pre></td></tr></table></figure>
-
-<p>对于Fragment ，在OncreateView中写</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, <span class="keyword">false</span>);</span><br><span class="line">binding.setData(myViewModel);</span><br><span class="line">binding.setLifecycleOwner(getActivity());</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://stonebobo.github.io/2021/04/15/NavigationController%20%E5%86%8D%E6%8E%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -349,6 +227,104 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/04/15/NavigationController%20%E5%86%8D%E6%8E%A2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://stonebobo.github.io/2021/04/15/NavigationController%20%E7%BB%88%E6%8E%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.JPG">
+      <meta itemprop="name" content="LittleStone">
+      <meta itemprop="description" content="记录技术的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LittleStone BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/15/NavigationController%20%E7%BB%88%E6%8E%A2/" class="post-title-link" itemprop="url">终探 NavigationController ----页面共享数据更简单</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-15 15:37:18" itemprop="dateCreated datePublished" datetime="2021-04-15T15:37:18+08:00">2021-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-16 14:58:00" itemprop="dateModified" datetime="2021-04-16T14:58:00+08:00">2021-04-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">安卓开发</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>在 <a target="_blank" rel="noopener" href="https://littlestone.space/2021/04/15/NavigationController%20%E5%86%8D%E6%8E%A2/">再探 NavigationController —-页面传递数据更简单</a>中，我们通过使用Bundle来传递数据，在本节 我们将总结 多个Fragment 如何共享数据，其实就是ViewModel 与 Fragment的结合</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/15/NavigationController%20%E7%BB%88%E6%8E%A2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

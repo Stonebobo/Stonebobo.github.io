@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"stonebobo.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="在 再探 NavigationController —-页面传递数据更简单中，我们通过使用Bundle来传递数据，在本节 我们将总结 多个Fragment 如何共享数据，其实就是ViewModel 与 Fragment的结合  效果图  分析上述效果图我们需要将界面一的值 传到界面二，界面二对值进行+1 或者 -1 将更新后的值 传回 界面一，我们可以通过上一节讲的Buddle 来进行传递数据，">
+  <meta name="description" content="在 再探 NavigationController —-页面传递数据更简单中，我们通过使用Bundle来传递数据，在本节 我们将总结 多个Fragment 如何共享数据，其实就是ViewModel 与 Fragment的结合">
 <meta property="og:type" content="article">
 <meta property="og:title" content="终探 NavigationController ----页面共享数据更简单">
 <meta property="og:url" content="https://stonebobo.github.io/2021/04/15/NavigationController%20%E7%BB%88%E6%8E%A2/index.html">
 <meta property="og:site_name" content="LittleStone BLOG">
-<meta property="og:description" content="在 再探 NavigationController —-页面传递数据更简单中，我们通过使用Bundle来传递数据，在本节 我们将总结 多个Fragment 如何共享数据，其实就是ViewModel 与 Fragment的结合  效果图  分析上述效果图我们需要将界面一的值 传到界面二，界面二对值进行+1 或者 -1 将更新后的值 传回 界面一，我们可以通过上一节讲的Buddle 来进行传递数据，">
+<meta property="og:description" content="在 再探 NavigationController —-页面传递数据更简单中，我们通过使用Bundle来传递数据，在本节 我们将总结 多个Fragment 如何共享数据，其实就是ViewModel 与 Fragment的结合">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/04/15/qE3cJyRDCLrO8nY.gif">
 <meta property="og:image" content="https://stonebobo.github.io/2021/04/15/NavigationController%20%E7%BB%88%E6%8E%A2/Users/LittleStone/AppData/Roaming/Typora/typora-user-images/image-20210415213840554.png">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/04/15/YJiSOMDZ9V8vU1T.png">
 <meta property="og:image" content="https://i.loli.net/2021/04/15/Awh1lBMDma3o7OU.png">
 <meta property="article:published_time" content="2021-04-15T07:37:18.000Z">
-<meta property="article:modified_time" content="2021-04-15T14:09:00.649Z">
+<meta property="article:modified_time" content="2021-04-16T06:58:00.482Z">
 <meta property="article:author" content="LittleStone">
 <meta property="article:tag" content="安卓开发">
 <meta property="article:tag" content="JetPack">
@@ -192,10 +192,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-04-15 15:37:18 / 修改时间：22:09:00" itemprop="dateCreated datePublished" datetime="2021-04-15T15:37:18+08:00">2021-04-15</time>
+              <time title="创建时间：2021-04-15 15:37:18" itemprop="dateCreated datePublished" datetime="2021-04-15T15:37:18+08:00">2021-04-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-16 14:58:00" itemprop="dateModified" datetime="2021-04-16T14:58:00+08:00">2021-04-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -241,6 +247,8 @@
         <blockquote>
 <p>在 <a target="_blank" rel="noopener" href="https://littlestone.space/2021/04/15/NavigationController%20%E5%86%8D%E6%8E%A2/">再探 NavigationController —-页面传递数据更简单</a>中，我们通过使用Bundle来传递数据，在本节 我们将总结 多个Fragment 如何共享数据，其实就是ViewModel 与 Fragment的结合</p>
 </blockquote>
+<span id="more"></span>
+
 <h4 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h4><img src="https://i.loli.net/2021/04/15/qE3cJyRDCLrO8nY.gif" alt="5" style="zoom:67%;">
 
 <h4 id="分析上述效果图"><a href="#分析上述效果图" class="headerlink" title="分析上述效果图"></a>分析上述效果图</h4><p>我们需要将界面一的值 传到界面二，界面二对值进行+1 或者 -1 将更新后的值 传回 界面一，我们可以通过上一节讲的Buddle 来进行传递数据，也可以通过我们之前所讲的ViewModel 来存放这个数据，<strong>这时候就不是界面之间传值，而是两个界面对一个数据的共同访问</strong>，</p>
@@ -314,10 +322,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/04/15/NavigationController%20%E5%86%8D%E6%8E%A2/" rel="prev" title="再探 NavigationController ----页面传递数据更简单">
-      <i class="fa fa-chevron-left"></i> 再探 NavigationController ----页面传递数据更简单
+    <a href="/2021/04/15/NavigationController%20%E5%88%9D%E6%8E%A2/" rel="prev" title="初探 NavigationController ----页面切换更简单">
+      <i class="fa fa-chevron-left"></i> 初探 NavigationController ----页面切换更简单
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/15/NavigationController%20%E5%86%8D%E6%8E%A2/" rel="next" title="再探 NavigationController ----页面传递数据更简单">
+      再探 NavigationController ----页面传递数据更简单 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
