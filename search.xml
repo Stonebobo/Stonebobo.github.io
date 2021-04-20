@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Andorid四大组件（二） | BroadcastReceiver</title>
+    <url>/2021/04/20/Andorid%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%EF%BC%88%E4%BA%8C%EF%BC%89--BroadcastReceiver/</url>
+    <content><![CDATA[<h3 id="Andorid四大组件（二）-BroadcastReceiver"><a href="#Andorid四大组件（二）-BroadcastReceiver" class="headerlink" title="Andorid四大组件（二） | BroadcastReceiver"></a>Andorid四大组件（二） | BroadcastReceiver</h3><blockquote>
+<p>广播接收器 不要在Onreceive中 添加过多的耗时逻辑，因为在广播接受器中不允许开启线程</p>
+</blockquote>
+ <span id="more"></span>
+
+<h4 id="动态注册（接收广播）"><a href="#动态注册（接收广播）" class="headerlink" title="动态注册（接收广播）"></a>动态注册（接收广播）</h4><p><strong>动态接收广播不需要在AndroidManifest 声明</strong></p>
+<ol>
+<li><p>创建一个类 继承自 BroadcastReceiver 并重写 onReceive</p>
+</li>
+<li><p>实例化上面这个类</p>
+</li>
+<li><p>添加IntentFilter</p>
+</li>
+<li><p>注册广播</p>
+<blockquote>
+<p>注意：对于一些敏感的广播内容(网络状态等) 需要在在AndroidManifest 声明</p>
+</blockquote>
+</li>
+<li><p>注销广播</p>
+</li>
+<li><p>完整代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> IntentFilter intentFilter;</span><br><span class="line">    NetworkReceiver receiver;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        <span class="comment">//***************2*******************</span></span><br><span class="line">        receiver = <span class="keyword">new</span> NetworkReceiver();</span><br><span class="line">         <span class="comment">//***************3*******************</span></span><br><span class="line">        intentFilter = <span class="keyword">new</span> IntentFilter();</span><br><span class="line">        intentFilter.addAction(<span class="string">&quot;android.net.conn.CONNECTIVITY_CHANGE&quot;</span>);</span><br><span class="line">         <span class="comment">//***************4*******************</span></span><br><span class="line">        registerReceiver(receiver, intentFilter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">         <span class="comment">//***************5*******************</span></span><br><span class="line">        unregisterReceiver(receiver);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//***************1*******************</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">NetworkReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</span><br><span class="line">            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);</span><br><span class="line">            NetworkInfo networkInfo = manager.getActiveNetworkInfo();</span><br><span class="line">            <span class="keyword">if</span> (networkInfo != <span class="keyword">null</span> &amp;&amp; networkInfo.isAvailable()) &#123;</span><br><span class="line">                Toast.makeText(MainActivity.<span class="keyword">this</span>, <span class="string">&quot;已联网&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Toast.makeText(MainActivity.<span class="keyword">this</span>, <span class="string">&quot;网络异常&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h4 id="静态注册（接收广播）"><a href="#静态注册（接收广播）" class="headerlink" title="静态注册（接收广播）"></a>静态注册（接收广播）</h4><p>模拟机不支持静态注册，动态注册只有在APP开启的时候才可以接收到广播，如果想不开启APP就收到广播 需要静态注册广播</p>
+<p><strong>静态注册广播需要在AndroidManifest中声明，并且需要声明 itentfilter中的action</strong>，表明监听哪种广播</p>
+<ol>
+<li><p>创建一个类 继承自 BroadcastReceiver 重写 onreceive方法</p>
+</li>
+<li><p>在AndroidManifest中注册 上面这个广播</p>
+</li>
+<li><p>在注册中添加action，也就是想要监听的广播</p>
+</li>
+<li><p>添加一定的权限声明，根据不同的需求</p>
+</li>
+<li><p>全部代码（监听手机开机）</p>
+<p>MyReceiver类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(context, <span class="string">&quot;接受到广播&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MainActivity类中 不需要修改</p>
+<p>AndroidManifest 中注册 receiver,添加权限声明</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="line">&lt;manifest xmlns:android=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span><br><span class="line">    <span class="keyword">package</span>=<span class="string">&quot;com.littlestone.broadcastreceiver_static&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;uses-permission android:name=<span class="string">&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot;</span>/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;application</span><br><span class="line">        android:allowBackup=<span class="string">&quot;true&quot;</span></span><br><span class="line">        android:icon=<span class="string">&quot;@mipmap/ic_launcher&quot;</span></span><br><span class="line">        android:label=<span class="string">&quot;@string/app_name&quot;</span></span><br><span class="line">        android:roundIcon=<span class="string">&quot;@mipmap/ic_launcher_round&quot;</span></span><br><span class="line">        android:supportsRtl=<span class="string">&quot;true&quot;</span></span><br><span class="line">        android:theme=<span class="string">&quot;@style/Theme.BroadcastReceiver_Static&quot;</span>&gt;</span><br><span class="line">        &lt;activity android:name=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span><br><span class="line">            &lt;intent-filter&gt;</span><br><span class="line">                &lt;action android:name=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">                &lt;category android:name=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span><br><span class="line">            &lt;/intent-filter&gt;</span><br><span class="line">        &lt;/activity&gt;</span><br><span class="line"></span><br><span class="line">        &lt;receiver</span><br><span class="line">            android:name=<span class="string">&quot;.MyReceiver&quot;</span></span><br><span class="line">            android:enabled=<span class="string">&quot;true&quot;</span></span><br><span class="line">            android:exported=<span class="string">&quot;true&quot;</span>&gt;</span><br><span class="line">            &lt;intent-filter&gt;</span><br><span class="line">                &lt;action android:name=<span class="string">&quot;android.intent.action.BOOT_COMPLETED&quot;</span>/&gt;</span><br><span class="line">            &lt;/intent-filter&gt;</span><br><span class="line">        &lt;/receiver&gt;</span><br><span class="line">    &lt;/application&gt;</span><br><span class="line"></span><br><span class="line">&lt;/manifest&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h4 id="发送标准广播"><a href="#发送标准广播" class="headerlink" title="发送标准广播"></a>发送标准广播</h4><blockquote>
+<p>发送广播前，需要定义一个接收该广播的类MyReceiver，静态注册</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(context, <span class="string">&quot;收到标准广播&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        abortBroadcast();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如何发送广播？</p>
+<ol>
+<li><p>将上面这个静态注册的广播在AnroidMnifest注册</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">&quot;com.littlestone.broadcastreceiver_sendstandard&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    &lt;application</span><br><span class="line">        android:allowBackup=&quot;true&quot;</span><br><span class="line">        android:icon=&quot;@mipmap/ic_launcher&quot;</span><br><span class="line">        android:label=&quot;@string/app_name&quot;</span><br><span class="line">        android:roundIcon=&quot;@mipmap/ic_launcher_round&quot;</span><br><span class="line">        android:supportsRtl=&quot;true&quot;</span><br><span class="line">        android:theme=&quot;@style/Theme.BroadcastReceiver_sendStandard&quot;&gt;</span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        &lt;receiver</span><br><span class="line">            android:name=&quot;.MySecondReceiver&quot;</span><br><span class="line">            android:enabled=&quot;true&quot;</span><br><span class="line">            android:exported=&quot;true&quot;&gt;</span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;com.littlestone.broadcast.mine&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        &lt;receiver</span><br><span class="line">            android:name=&quot;.MyReceiver&quot;</span><br><span class="line">            android:enabled=&quot;true&quot;</span><br><span class="line">            android:exported=&quot;true&quot;&gt;</span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span> <span class="attr">android:priority</span>=<span class="string">&quot;100&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;com.littlestone.broadcast.mine&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>定义一个要发送的广播的Intent</p>
+</li>
+<li><p>发送广播（sendBroadcast（intent））</p>
+</li>
+<li><p>全部代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Button btn_standard, btn_order;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        btn_standard = findViewById(R.id.btn_standard);</span><br><span class="line">        btn_order = findViewById(R.id.btn_order);</span><br><span class="line"></span><br><span class="line">        btn_standard.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                Intent intent = <span class="keyword">new</span> Intent(<span class="string">&quot;com.littlestone.broadcast.mine&quot;</span>);</span><br><span class="line">                <span class="comment">//标准广播</span></span><br><span class="line">                sendBroadcast(intent);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        btn_order.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                Intent intent = <span class="keyword">new</span> Intent(<span class="string">&quot;com.littlestone.broadcast.mine&quot;</span>);</span><br><span class="line">                <span class="comment">//有序广播 第二个参数为权限相关 设为null即可</span></span><br><span class="line">                sendOrderedBroadcast(intent, <span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="发送有序广播"><a href="#发送有序广播" class="headerlink" title="发送有序广播"></a>发送有序广播</h4><blockquote>
+<p>发送有序广播与标准广播大体上类似，只不过是sendorderBroadcast(intent)</p>
+</blockquote>
+<p>既然是有序广播，就可以定义广播接收器的优先级，在intentfilter标签中 android:priority=”100” 就定义优先级的大小</p>
+<p>代码将上述 第二个Button的点击事件处理，以及 AndroidMnifest中两个接收的注册声明</p>
+<h4 id="发送本地广播"><a href="#发送本地广播" class="headerlink" title="发送本地广播"></a>发送本地广播</h4><p>发送本地广播需要在 build.gradle中添加依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">implementation &#x27;androidx.localbroadcastmanager:localbroadcastmanager:1.0.0&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>发送本地广播</p>
+<ol>
+<li><p>需要先实例化一个LocalBroadcastManager 通过LocalBroadcastManager.getInstance(Context context) 实例化</p>
+</li>
+<li><p>发送本地广播与 发送系统广播没有大的差别 只不过需要通过上面的manager来发送 而不是 Context类中来发送</p>
+</li>
+</ol>
+<p>接收本地广播</p>
+<p>接收本地广播 采用动态注册的方式 进行接收广播，为什么采用动态注册 而不是静态，静态注册APP不启动时也可以收到广播，但是我们接受的是本地广播，本来就需要我们APP在启动的状态下发送，静态注册就没有意义了</p>
+<ol>
+<li><p>实例化一个IntentFilter</p>
+</li>
+<li><p>为IntentFilter添加action 也就是监听什么广播</p>
+</li>
+<li><p>使用localBroadCastManager.registerReceiver（intentfilter）来注册广播</p>
+</li>
+<li><p>使用localBroadCastManager.unregisterReceiver（intentfilter）来注销广播</p>
+</li>
+</ol>
+<p>全部代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> IntentFilter filter;</span><br><span class="line">    <span class="keyword">private</span> LocalBroadcastReceiver localBroadcastReceiver;</span><br><span class="line">    <span class="keyword">private</span> LocalBroadcastManager localBroadcastManager;</span><br><span class="line">    <span class="keyword">private</span> Button button;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//发送本地广播</span></span><br><span class="line">        button = findViewById(R.id.button);</span><br><span class="line">        button.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                Intent intent = <span class="keyword">new</span> Intent(<span class="string">&quot;com.littlestone.localbroadcast&quot;</span>);</span><br><span class="line">                localBroadcastManager.sendBroadcast(intent);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//接收本地广播相关代码 动态注册接收广播</span></span><br><span class="line">        filter = <span class="keyword">new</span> IntentFilter();</span><br><span class="line">        filter.addAction(<span class="string">&quot;com.littlestone.localbroadcast&quot;</span>);</span><br><span class="line">        localBroadcastReceiver = <span class="keyword">new</span> LocalBroadcastReceiver();</span><br><span class="line">        localBroadcastManager = LocalBroadcastManager.getInstance(<span class="keyword">this</span>);</span><br><span class="line">        localBroadcastManager.registerReceiver(localBroadcastReceiver, filter);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">        localBroadcastManager.unregisterReceiver(localBroadcastReceiver);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">LocalBroadcastReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</span><br><span class="line">            Toast.makeText(context, <span class="string">&quot;收到本地广播&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>安卓开发</category>
+      </categories>
+      <tags>
+        <tag>安卓开发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>再探 NavigationController ----页面传递数据更简单</title>
     <url>/2021/04/15/NavigationController%20%E5%86%8D%E6%8E%A2/</url>
     <content><![CDATA[<blockquote>
@@ -274,7 +375,35 @@
 <li>landscape: 水平模式</li>
 </ol>
 <hr>
-<h4 id="活动的启动模式"><a href="#活动的启动模式" class="headerlink" title="活动的启动模式"></a>活动的启动模式</h4><hr>
+<h4 id="活动的启动模式"><a href="#活动的启动模式" class="headerlink" title="活动的启动模式"></a>活动的启动模式</h4><p>需要再 AndroidManifest 的activity标签中 声明 launchMode</p>
+<ol>
+<li><p>standard</p>
+<p>standard 是活动的默认启动模型，在不显性的指定的情况下，都是这种模式。stacndard 模式中，不管返回栈中是否存在该Activity，都会创建这个Activity 并将其加入到返回栈中</p>
+<p><img src="https://i.loli.net/2021/04/20/NUcOCkHZGMfp2FI.png" alt="image-20210420152258189"></p>
+</li>
+<li><p>singleTop</p>
+<p>singletop是standard的改进版本，会判断栈顶是否为要启动的活动，</p>
+<ul>
+<li>如果是就不创建新的活动了，直接使用。</li>
+<li>如果栈顶不是要启动的活动，还需要再创建并加入到返回栈中</li>
+</ul>
+</li>
+<li><p>singleTask</p>
+<p>singleTask是singletop的改进版本，会判断栈内是否存在要启动的活动</p>
+<ul>
+<li><p>如果存在，需要将该活动之间的活动 弹出栈，然后直接使用</p>
+</li>
+<li><p>如果不存在，再创建，并加入到返回栈中</p>
+<p><img src="https://i.loli.net/2021/04/20/yp4B9iGIZV1laKr.png" alt="image-20210420153032013"></p>
+</li>
+</ul>
+</li>
+<li><p>singleInStance</p>
+<p>是Activity 启动模式中最难理解的一种，会将该Activity放置到一个新的返回栈中，以便其他APP调用</p>
+<p><img src="https://i.loli.net/2021/04/20/XSohuAsT976azkP.png" alt="image-20210420153710778"></p>
+</li>
+</ol>
+<hr>
 <h4 id="活动的最佳实践"><a href="#活动的最佳实践" class="headerlink" title="活动的最佳实践"></a>活动的最佳实践</h4><hr>
 ]]></content>
       <categories>
