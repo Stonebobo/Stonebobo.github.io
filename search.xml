@@ -50,7 +50,7 @@
 <h4 id="发送标准广播"><a href="#发送标准广播" class="headerlink" title="发送标准广播"></a>发送标准广播</h4><blockquote>
 <p>发送广播前，需要定义一个接收该广播的类MyReceiver，静态注册</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(context, <span class="string">&quot;收到标准广播&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        abortBroadcast();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(context, <span class="string">&quot;收到标准广播&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        <span class="comment">//下边这个是有序广播中 拦截广播</span></span><br><span class="line">        abortBroadcast();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如何发送广播？</p>
 <ol>
@@ -644,7 +644,27 @@
 <li>接口不能被实例化</li>
 <li>接口的实现类 必须将接口中的抽象方法重写 否则 该类为抽象类</li>
 </ol>
-<h4 id="9-抽象类"><a href="#9-抽象类" class="headerlink" title="9. 抽象类"></a>9. 抽象类</h4><p>抽象类 是一种抽象能力弱于接口的类 </p>
+<h4 id="9-函数式接口"><a href="#9-函数式接口" class="headerlink" title="9.函数式接口"></a>9.函数式接口</h4><p>视频教程:<a href="https://www.bilibili.com/video/BV1V4411p7EF?p=10&spm_id_from=pageDriver">狂神说</a></p>
+<p>函数式接口(Function interface) 是java8新引入的这一种。</p>
+<ol>
+<li><p>定义：任何一个接口，如果接口中只包含<strong>唯一一个</strong>抽象方法，那么就是函数式接口</p>
+</li>
+<li><p>特性：对于函数式接口，可以采用Lambda表达式来创建该接口的对象</p>
+</li>
+<li><p>为什么要引入lambda 表达式，还是为了简化代码，梳理一下 要调用一个接口的实现类 改进过程</p>
+<ul>
+<li>在同一个包下，创建Main class ，接口，以及 接口的实现类 三个文件</li>
+<li>在同一个.java文件下 ，在Main.class ｛｝外部 创建 一个实现类 和接口</li>
+<li>在同一个.java文件下，在Main.class｛｝内部  pswm 外部 创建一个静态外部类，接口还是在Main.class｛｝外部</li>
+<li>在同一个.java文件下，在Main.class｛｝内部  pswm 内部 创建一个内部类，接口还是在Main.class｛｝外部</li>
+<li>在同一个.java文件下，在Main.class｛｝内部  pswm 内部  创建一个匿名内部类，接口同上</li>
+<li>使用Lambda表达式（代码如下）</li>
+</ul>
+</li>
+<li><p>示例：下面两个线程都是打印一句话</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LambdaPractice</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;匿名内部类实现&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; System.out.println(<span class="string">&quot;lambda表达式实现&quot;</span>)).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="10-抽象类"><a href="#10-抽象类" class="headerlink" title="10. 抽象类"></a>10. 抽象类</h4><p>抽象类 是一种抽象能力弱于接口的类 </p>
 <p>特征：</p>
 <ol>
 <li>包含抽象方法的类 一定是抽象类</li>

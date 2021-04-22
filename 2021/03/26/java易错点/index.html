@@ -28,7 +28,7 @@
 <meta property="og:description" content="在 JAVA 语言中容易被忽略的问题 摘自于Leetcode java突击面试宝典，仅供个人学习参考，转载请注明出处！">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-26T11:41:33.000Z">
-<meta property="article:modified_time" content="2021-03-26T09:34:04.533Z">
+<meta property="article:modified_time" content="2021-04-21T12:41:20.438Z">
 <meta property="article:author" content="LittleStone">
 <meta property="article:tag" content="JAVA">
 <meta name="twitter:card" content="summary">
@@ -213,10 +213,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-26 19:41:33 / 修改时间：17:34:04" itemprop="dateCreated datePublished" datetime="2021-03-26T19:41:33+08:00">2021-03-26</time>
+              <time title="创建时间：2021-03-26 19:41:33" itemprop="dateCreated datePublished" datetime="2021-03-26T19:41:33+08:00">2021-03-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-21 20:41:20" itemprop="dateModified" datetime="2021-04-21T20:41:20+08:00">2021-04-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -240,14 +246,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.5k</span>
+              <span>3.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -363,7 +369,27 @@
 <li>接口不能被实例化</li>
 <li>接口的实现类 必须将接口中的抽象方法重写 否则 该类为抽象类</li>
 </ol>
-<h4 id="9-抽象类"><a href="#9-抽象类" class="headerlink" title="9. 抽象类"></a>9. 抽象类</h4><p>抽象类 是一种抽象能力弱于接口的类 </p>
+<h4 id="9-函数式接口"><a href="#9-函数式接口" class="headerlink" title="9.函数式接口"></a>9.函数式接口</h4><p>视频教程:<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1V4411p7EF?p=10&spm_id_from=pageDriver">狂神说</a></p>
+<p>函数式接口(Function interface) 是java8新引入的这一种。</p>
+<ol>
+<li><p>定义：任何一个接口，如果接口中只包含<strong>唯一一个</strong>抽象方法，那么就是函数式接口</p>
+</li>
+<li><p>特性：对于函数式接口，可以采用Lambda表达式来创建该接口的对象</p>
+</li>
+<li><p>为什么要引入lambda 表达式，还是为了简化代码，梳理一下 要调用一个接口的实现类 改进过程</p>
+<ul>
+<li>在同一个包下，创建Main class ，接口，以及 接口的实现类 三个文件</li>
+<li>在同一个.java文件下 ，在Main.class ｛｝外部 创建 一个实现类 和接口</li>
+<li>在同一个.java文件下，在Main.class｛｝内部  pswm 外部 创建一个静态外部类，接口还是在Main.class｛｝外部</li>
+<li>在同一个.java文件下，在Main.class｛｝内部  pswm 内部 创建一个内部类，接口还是在Main.class｛｝外部</li>
+<li>在同一个.java文件下，在Main.class｛｝内部  pswm 内部  创建一个匿名内部类，接口同上</li>
+<li>使用Lambda表达式（代码如下）</li>
+</ul>
+</li>
+<li><p>示例：下面两个线程都是打印一句话</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LambdaPractice</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;匿名内部类实现&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; System.out.println(<span class="string">&quot;lambda表达式实现&quot;</span>)).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="10-抽象类"><a href="#10-抽象类" class="headerlink" title="10. 抽象类"></a>10. 抽象类</h4><p>抽象类 是一种抽象能力弱于接口的类 </p>
 <p>特征：</p>
 <ol>
 <li>包含抽象方法的类 一定是抽象类</li>
@@ -471,7 +497,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-JAVA-%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%AE%B9%E6%98%93%E8%A2%AB%E5%BF%BD%E7%95%A5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">在 JAVA 语言中容易被忽略的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">1. 基本的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="nav-text">2. 面向对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E9%87%8D%E8%BD%BD%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="nav-text">3. 重载的条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E9%87%8D%E5%86%99"><span class="nav-text">4. 重写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%B1%BB%E4%B8%AD%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="nav-text">5. 类中初始化的顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Static"><span class="nav-text">6. Static</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Final"><span class="nav-text">7. Final</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E6%8E%A5%E5%8F%A3"><span class="nav-text">8. 接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-text">9. 抽象类</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-JAVA-%E8%AF%AD%E8%A8%80%E4%B8%AD%E5%AE%B9%E6%98%93%E8%A2%AB%E5%BF%BD%E7%95%A5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">在 JAVA 语言中容易被忽略的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">1. 基本的数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="nav-text">2. 面向对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E9%87%8D%E8%BD%BD%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="nav-text">3. 重载的条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E9%87%8D%E5%86%99"><span class="nav-text">4. 重写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%B1%BB%E4%B8%AD%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="nav-text">5. 类中初始化的顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Static"><span class="nav-text">6. Static</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Final"><span class="nav-text">7. Final</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E6%8E%A5%E5%8F%A3"><span class="nav-text">8. 接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3"><span class="nav-text">9.函数式接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-text">10. 抽象类</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -547,12 +573,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">67k</span>
+    <span title="站点总字数">68k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:01</span>
+    <span title="站点阅读时长">1:02</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
