@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Andorid开发 | 使用LitePal操作数据库</title>
+    <title>Android开发 | 使用LitePal操作数据库</title>
     <url>/2021/04/23/Andorid%E5%BC%80%E5%8F%91--%E4%BD%BF%E7%94%A8LitePal%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
     <content><![CDATA[<h2 id="Andorid开发-使用LitePal操作数据库"><a href="#Andorid开发-使用LitePal操作数据库" class="headerlink" title="Andorid开发 | 使用LitePal操作数据库"></a>Andorid开发 | 使用LitePal操作数据库</h2><blockquote>
 <p>总结于 郭霖大神 《第一行代码》中LitePal章节</p>
@@ -78,7 +78,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Andorid四大组件（二） | BroadcastReceiver</title>
+    <title>Android四大组件（二） | BroadcastReceiver</title>
     <url>/2021/04/20/Andorid%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%EF%BC%88%E4%BA%8C%EF%BC%89--BroadcastReceiver/</url>
     <content><![CDATA[<h3 id="Andorid四大组件（二）-BroadcastReceiver"><a href="#Andorid四大组件（二）-BroadcastReceiver" class="headerlink" title="Andorid四大组件（二） | BroadcastReceiver"></a>Andorid四大组件（二） | BroadcastReceiver</h3><blockquote>
 <p>广播接收器 不要在Onreceive中 添加过多的耗时逻辑，因为在广播接受器中不允许开启线程</p>
@@ -400,7 +400,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Andorid四大组件（一） | Activity</title>
+    <title>Android四大组件（一） | Activity</title>
     <url>/2021/04/12/Andorid%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%EF%BC%88%E4%B8%80%EF%BC%89--Activity/</url>
     <content><![CDATA[<h2 id="Andorid四大组件（一）-Activity"><a href="#Andorid四大组件（一）-Activity" class="headerlink" title="Andorid四大组件（一） | Activity"></a>Andorid四大组件（一） | Activity</h2> <span id="more"></span>
 
@@ -757,7 +757,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Andorid开发 | RecyclerView 仿QQ聊天界面实现</title>
+    <title>Android开发 | RecyclerView 仿QQ聊天界面实现</title>
     <url>/2021/03/21/Andorid%E5%BC%80%E5%8F%91--RecyclerView-%E4%BB%BFQQ%E8%81%8A%E5%A4%A9%E7%95%8C%E9%9D%A2%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<blockquote>
 <p>前言：看了郭霖先生的著作《第一行代码-第二版》决定自己动手实现一个，该篇博客包含了APP制作的全部流程，RecyclerView 视频教程<a href="https://www.bilibili.com/video/BV13y4y1E7pF?p=22">RecyclerView 基础使用教程</a></p>
@@ -869,7 +869,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Andorid开发 | LinearLayout布局</title>
+    <title>Android开发 | LinearLayout布局</title>
     <url>/2021/03/19/Andorid%E5%BC%80%E5%8F%91-LinearLayout%E5%B8%83%E5%B1%80/</url>
     <content><![CDATA[<h2 id="Android开发-LinearLayout布局中的一些坑"><a href="#Android开发-LinearLayout布局中的一些坑" class="headerlink" title="Android开发 | LinearLayout布局中的一些坑"></a>Android开发 | LinearLayout布局中的一些坑</h2><h4 id="Linear布局中的一些坑"><a href="#Linear布局中的一些坑" class="headerlink" title="Linear布局中的一些坑"></a>Linear布局中的一些坑</h4><ol>
 <li><p><code>layout_weight</code>分配的是 屏幕剩余的空间，如何理解？</p>
