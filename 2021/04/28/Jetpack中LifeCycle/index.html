@@ -20,24 +20,24 @@
     var CONFIG = {"hostname":"stonebobo.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="基于Android8.0的消息推送 观看B站视频, 文字看不懂 就看视频吧  前言：​        Android8.0 新版本中 对APP的推送通知开始管理 分为了如下几个重要程度">
+  <meta name="description" content="使用LifeCycles让控件感知活动的生命周期 在JetPack没有提出时，如何让控件感知所在活动的生命周期？可能回需要在Activity中重写各种生命周期函数：OnStart、OnCreate、OnResume、OnPause、OnStop、OnDestroy，导致Activity中的代码过于冗长、移植性不高">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于Android8.0的APP消息推送">
-<meta property="og:url" content="https://stonebobo.github.io/2021/03/18/%E5%9F%BA%E4%BA%8EAndroid8-0%E7%9A%84APP%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/index.html">
+<meta property="og:title" content="Jetpack中LifeCycle">
+<meta property="og:url" content="https://stonebobo.github.io/2021/04/28/Jetpack%E4%B8%ADLifeCycle/index.html">
 <meta property="og:site_name" content="LittleStone BLOG">
-<meta property="og:description" content="基于Android8.0的消息推送 观看B站视频, 文字看不懂 就看视频吧  前言：​        Android8.0 新版本中 对APP的推送通知开始管理 分为了如下几个重要程度">
+<meta property="og:description" content="使用LifeCycles让控件感知活动的生命周期 在JetPack没有提出时，如何让控件感知所在活动的生命周期？可能回需要在Activity中重写各种生命周期函数：OnStart、OnCreate、OnResume、OnPause、OnStop、OnDestroy，导致Activity中的代码过于冗长、移植性不高">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2021/03/18/EYew1QuWDTKd5hS.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/18/9GuYVHTjyLro42p.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/18/KIvxhOSBUe7u9dR.png">
-<meta property="article:published_time" content="2021-03-18T12:11:56.000Z">
-<meta property="article:modified_time" content="2021-03-18T12:34:29.235Z">
+<meta property="og:image" content="https://i.loli.net/2021/04/28/BEQcpI4gxLm6UKs.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/28/kZKMQBtIFpjgS3o.gif">
+<meta property="article:published_time" content="2021-04-28T08:23:18.000Z">
+<meta property="article:modified_time" content="2021-04-28T08:48:55.947Z">
 <meta property="article:author" content="LittleStone">
 <meta property="article:tag" content="安卓开发">
+<meta property="article:tag" content="JetPack">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/03/18/EYew1QuWDTKd5hS.png">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/28/BEQcpI4gxLm6UKs.png">
 
-<link rel="canonical" href="https://stonebobo.github.io/2021/03/18/%E5%9F%BA%E4%BA%8EAndroid8-0%E7%9A%84APP%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/">
+<link rel="canonical" href="https://stonebobo.github.io/2021/04/28/Jetpack%E4%B8%ADLifeCycle/">
 
 
 <script id="page-configurations">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title>基于Android8.0的APP消息推送 | LittleStone BLOG</title>
+  <title>Jetpack中LifeCycle | LittleStone BLOG</title>
   
 
 
@@ -194,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://stonebobo.github.io/2021/03/18/%E5%9F%BA%E4%BA%8EAndroid8-0%E7%9A%84APP%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/">
+    <link itemprop="mainEntityOfPage" href="https://stonebobo.github.io/2021/04/28/Jetpack%E4%B8%ADLifeCycle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.JPG">
@@ -207,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          基于Android8.0的APP消息推送
+          Jetpack中LifeCycle
         </h1>
 
         <div class="post-meta">
@@ -219,7 +219,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-18 20:11:56 / 修改时间：20:34:29" itemprop="dateCreated datePublished" datetime="2021-03-18T20:11:56+08:00">2021-03-18</time>
+              <time title="创建时间：2021-04-28 16:23:18 / 修改时间：16:48:55" itemprop="dateCreated datePublished" datetime="2021-04-28T16:23:18+08:00">2021-04-28</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -227,7 +227,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+                  <a href="/categories/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">安卓开发</span></a>
                 </span>
             </span>
 
@@ -244,7 +244,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -263,30 +263,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="基于Android8-0的消息推送"><a href="#基于Android8-0的消息推送" class="headerlink" title="基于Android8.0的消息推送"></a>基于Android8.0的消息推送</h2><blockquote>
-<p>观看<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13y4y1E7pF?p=11&spm_id_from=pageDriver">B站视频</a>, 文字看不懂 就看视频吧</p>
+        <h2 id="使用LifeCycles让控件感知活动的生命周期"><a href="#使用LifeCycles让控件感知活动的生命周期" class="headerlink" title="使用LifeCycles让控件感知活动的生命周期"></a>使用LifeCycles让控件感知活动的生命周期</h2><blockquote>
+<p>在JetPack没有提出时，如何让控件感知所在活动的生命周期？可能回需要在Activity中重写各种生命周期函数：OnStart、OnCreate、OnResume、OnPause、OnStop、OnDestroy，导致Activity中的代码过于冗长、移植性不高</p>
 </blockquote>
-<h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>​        Android8.0 新版本中 对APP的推送通知开始管理 分为了如下几个重要程度</p>
 <span id="more"></span>
 
-<p><img src="https://i.loli.net/2021/03/18/EYew1QuWDTKd5hS.png" alt="image-20210318201658957"></p>
-<h4 id="如何发送一个消息？"><a href="#如何发送一个消息？" class="headerlink" title="如何发送一个消息？"></a>如何发送一个消息？</h4><p>我们从后向前分析 都需要用到哪些类 API</p>
-<ol>
-<li><p>我们通过如下的代码进行发送通知与取消通知</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//4.发送通知</span></span><br><span class="line">notificationManager.notify(<span class="number">1</span>, notification); <span class="comment">//第一个参数为 这个推送的id 自己设置 取消通知时使用，第二个参数是 通知内容</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 5. 取消通知</span></span><br><span class="line">notificationManager.cancel(<span class="number">1</span>);<span class="comment">//第一个参数为 这个推送的id 自己设置 取消通知时使用</span></span><br></pre></td></tr></table></figure>
-
-<p>所以我们需要实例化 <code>notificationManager</code>, <code>notification</code></p>
+<blockquote>
+<p> 在JetPack没有提出时，如何让控件感知所在活动的生命周期？可能回需要在Activity中重写各种生命周期函数：OnStart、OnCreate、OnResume、OnPause、OnStop、OnDestroy，导致Activity中的代码过于冗长、移植性不高</p>
+</blockquote>
+<h4 id="视频教程"><a href="#视频教程" class="headerlink" title="视频教程"></a>视频教程</h4><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1w4411t7UQ?p=21">视频链接</a></p>
+<h4 id="具体逻辑"><a href="#具体逻辑" class="headerlink" title="具体逻辑"></a>具体逻辑</h4><ol>
+<li><p>就是创建一个类，这个类继承自某个控件，</p>
 </li>
-<li><p>实例化<code>notificationManager</code>，并不是通过构造函数来实例化一个对象，而是调用<code>getSystemService(NOTIFICATION_SERVICE)</code> </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> NotificationManager notificationManager;<span class="comment">//当作成员变量 方便后续使用 </span></span><br><span class="line">notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);</span><br></pre></td></tr></table></figure></li>
-<li><p>实例化  <code>notification</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//3.设置通知属性(标题, 内容等) Builder括号中第二个参数一定要与NotificationChannel中注册的一致【第四步中会提NotificationChannel】</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//下两行代码 为点击通知跳转活动做准备</span></span><br><span class="line">Intent intent=<span class="keyword">new</span> Intent(<span class="keyword">this</span>,MainActivity.class);</span><br><span class="line">PendingIntent pendingIntent = PendingIntent.getActivity(<span class="keyword">this</span>, <span class="number">0</span>, intent, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">Notification notification = <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>, <span class="string">&quot;little&quot;</span>)</span><br><span class="line">    .setContentTitle(<span class="string">&quot;西大新闻&quot;</span>)<span class="comment">//设置通知标题</span></span><br><span class="line">    .setContentText(<span class="string">&quot;硕博楼公寓投入使用&quot;</span>)<span class="comment">//设置通知内容</span></span><br><span class="line">    .setSmallIcon(R.drawable.icon)<span class="comment">//设置通知图标</span></span><br><span class="line">    <span class="comment">//setLargeIcon 参数类型为Bitmap,需要将图片转换为Bitmap类型 通过BitmapFactory.decodeResource</span></span><br><span class="line">    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.img))</span><br><span class="line">    .setColor(Color.parseColor(<span class="string">&quot;#ff0000&quot;</span>))<span class="comment">//设置小图标的颜色 需要Int类型的参数 通过Color.parseColor()</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//########################################################################</span></span><br><span class="line">    <span class="comment">//设置点击通知后跳转到活动 需要PendingIntent 类型的参数</span></span><br><span class="line">    .setContentIntent(pendingIntent)</span><br><span class="line">    <span class="comment">//########################################################################</span></span><br><span class="line">    </span><br><span class="line">    .setAutoCancel(<span class="keyword">true</span>)<span class="comment">//设置点击后是否消失</span></span><br><span class="line">    .build();<span class="comment">//固定写法</span></span><br></pre></td></tr></table></figure></li>
-<li><p>Andorid8.0 新特性</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2.Android8.0新特性 系统控制通知的关键程度（可选）</span></span><br><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) &#123;</span><br><span class="line">    NotificationChannel notificationChannel = <span class="keyword">new</span> NotificationChannel(<span class="string">&quot;little&quot;</span>, <span class="string">&quot;测试&quot;</span>,</span><br><span class="line">    NotificationManager.IMPORTANCE_HIGH);<span class="comment">//设置重要性程度</span></span><br><span class="line">    notificationManager.createNotificationChannel(notificationChannel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>实验效果图：</p>
-<img src="https://i.loli.net/2021/03/18/9GuYVHTjyLro42p.png" alt="image-20210318203237693" style="zoom: 67%;"></li>
+<li><p>类要<strong>实现LifecycleObserver 接口</strong></p>
+</li>
+<li><p>类内部就可以通过，在函数前加注解@OnLifecycleEvent(Lifecycle.Event.ON_PAUSE) 使得当Activity处于Pause时，执行这个函数</p>
+<p>例如</p>
+<p><img src="https://i.loli.net/2021/04/28/BEQcpI4gxLm6UKs.png" alt="image-20210428163600593"></p>
+</li>
+<li><p> 在Activity中添加这个观察者</p>
+</li>
 </ol>
-<img src="https://i.loli.net/2021/03/18/KIvxhOSBUe7u9dR.png" alt="image-20210318203351880" style="zoom: 67%;">
+<h4 id="实例代码"><a href="#实例代码" class="headerlink" title="实例代码"></a>实例代码</h4><p>要求实现一个计时器，只记录APP可见的时间，且到后台后 停止记录，并且在切换语言，横竖屏 仍要保持即时，不丢失数据</p>
+<p><img src="https://i.loli.net/2021/04/28/kZKMQBtIFpjgS3o.gif" alt="6"></p>
+<p>ViewModel</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyViewModel</span> <span class="keyword">extends</span> <span class="title">ViewModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> elapseTime;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getElapseTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> elapseTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setElapseTime</span><span class="params">(<span class="keyword">long</span> elapseTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.elapseTime = elapseTime;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MainActivity</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> MyChronometer myChronometer;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String TAG = <span class="string">&quot;LittleStone&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        myChronometer = findViewById(R.id.meter);</span><br><span class="line">        <span class="comment">//使用ViewModel是为了在改变手机横竖向、语言时，保存数据</span></span><br><span class="line">        MyViewModel myViewModel = <span class="keyword">new</span> ViewModelProvider(<span class="keyword">this</span>).get(MyViewModel.class);</span><br><span class="line">        myChronometer.setMyViewModel(myViewModel);</span><br><span class="line">        <span class="comment">//添加观察者</span></span><br><span class="line">        getLifecycle().addObserver(myChronometer);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自定义一个定时器，Chronometer 其实也是Textview的子类，需要继承自Chronometer 并且实现观察者接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyChronometer</span> <span class="keyword">extends</span> <span class="title">Chronometer</span> <span class="keyword">implements</span> <span class="title">LifecycleObserver</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> MyViewModel myViewModel;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String TAG = <span class="string">&quot;LittleStone&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyChronometer</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMyViewModel</span><span class="params">(MyViewModel myViewModel)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.myViewModel = myViewModel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">pause</span><span class="params">()</span></span>&#123;</span><br><span class="line">        myViewModel.setElapseTime(SystemClock.elapsedRealtime()-getBase());</span><br><span class="line">        <span class="keyword">this</span>.stop();</span><br><span class="line">        Log.i(TAG, <span class="string">&quot;pause: &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@OnLifecycleEvent(Lifecycle.Event.ON_RESUME)</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">resume</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.setBase(SystemClock.elapsedRealtime()-myViewModel.getElapseTime());</span><br><span class="line">        <span class="keyword">this</span>.start();</span><br><span class="line">        Log.i(TAG, <span class="string">&quot;resume: &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
@@ -301,7 +310,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://stonebobo.github.io/2021/03/18/%E5%9F%BA%E4%BA%8EAndroid8-0%E7%9A%84APP%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81/" title="基于Android8.0的APP消息推送">https://stonebobo.github.io/2021/03/18/基于Android8-0的APP消息推送/</a>
+    <a href="https://stonebobo.github.io/2021/04/28/Jetpack%E4%B8%ADLifeCycle/" title="Jetpack中LifeCycle">https://stonebobo.github.io/2021/04/28/Jetpack中LifeCycle/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -313,6 +322,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/" rel="tag"># 安卓开发</a>
+              <a href="/tags/JetPack/" rel="tag"># JetPack</a>
           </div>
 
         
@@ -321,13 +331,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/03/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/" rel="prev" title="计算机网络|高频考点">
-      <i class="fa fa-chevron-left"></i> 计算机网络|高频考点
+    <a href="/2021/04/23/Andorid%E5%BC%80%E5%8F%91--%E4%BD%BF%E7%94%A8LitePal%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="prev" title="Android开发 | 使用LitePal操作数据库">
+      <i class="fa fa-chevron-left"></i> Android开发 | 使用LitePal操作数据库
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/03/19/Andorid%E5%BC%80%E5%8F%91-LinearLayout%E5%B8%83%E5%B1%80/" rel="next" title="Android开发 | LinearLayout布局">
-      Android开发 | LinearLayout布局 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -386,7 +393,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8EAndroid8-0%E7%9A%84%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81"><span class="nav-text">基于Android8.0的消息推送</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A"><span class="nav-text">前言：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%8F%91%E9%80%81%E4%B8%80%E4%B8%AA%E6%B6%88%E6%81%AF%EF%BC%9F"><span class="nav-text">如何发送一个消息？</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8LifeCycles%E8%AE%A9%E6%8E%A7%E4%BB%B6%E6%84%9F%E7%9F%A5%E6%B4%BB%E5%8A%A8%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-text">使用LifeCycles让控件感知活动的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B"><span class="nav-text">视频教程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E9%80%BB%E8%BE%91"><span class="nav-text">具体逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="nav-text">实例代码</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
