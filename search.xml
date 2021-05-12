@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>java多线程编程</title>
+    <url>/2021/05/09/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="JAVA多线程编程"><a href="#JAVA多线程编程" class="headerlink" title="JAVA多线程编程"></a>JAVA多线程编程</h2><blockquote>
+<p>观看 狂神说 视频 总结</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="1-创建方法"><a href="#1-创建方法" class="headerlink" title="1. 创建方法"></a>1. 创建方法</h4><h5 id="1-继承自Thread类"><a href="#1-继承自Thread类" class="headerlink" title="1.继承自Thread类"></a>1.继承自Thread类</h5><p>   重写run方法 并调用 .start（）方法 </p>
+<ul>
+<li><p>代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;子线程执行&quot;</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MyThread myThread = <span class="keyword">new</span> MyThread();</span><br><span class="line">        myThread.start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2000</span>; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;主线程执行&quot;</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>执行结果图：</p>
+<img src="https://i.loli.net/2021/05/09/UdFJe6X8OuNWftq.png" alt="image-20210509162607982" style="zoom:50%;"></li>
+<li><p>分析：</p>
+<p>主线程与子线程走走停停的状态 交替执行</p>
+</li>
+</ul>
+<h5 id="2-实现Runable接口"><a href="#2-实现Runable接口" class="headerlink" title="2.实现Runable接口"></a>2.实现Runable接口</h5><p>   定义MyRunable接口实现Runable接口，实现run方法（线程体），创建线程对象，并调用start方法启动线程</p>
+<ul>
+<li><p>代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">200</span>; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;---子线程执行&quot;</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MyThread2 myThread2 = <span class="keyword">new</span> MyThread2();</span><br><span class="line">        Thread thread = <span class="keyword">new</span> Thread(myThread2);</span><br><span class="line">        thread.start();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2000</span>; i++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;主线程执行&quot;</span>+i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>执行结果图</p>
+<img src="https://i.loli.net/2021/05/09/dwzT7YQupLjDNXF.png" alt="image-20210509164354637" style="zoom:50%;"></li>
+<li><p>分析</p>
+<p>线程不是创建好以后就直接去执行的，而是等待CPU的调度。主线程与子线程是交替执行的</p>
+</li>
+</ul>
+<h5 id="3-实现Callable接口"><a href="#3-实现Callable接口" class="headerlink" title="3. 实现Callable接口"></a>3. 实现Callable接口</h5><ul>
+<li><p>好处</p>
+<ul>
+<li>可以定义返回值类型</li>
+<li>可以抛出异常</li>
+</ul>
+</li>
+<li><p>过程</p>
+<ul>
+<li>创建服务</li>
+<li>提交执行</li>
+<li>获取结果</li>
+<li>结束服务</li>
+</ul>
+</li>
+<li><p>代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadCallable</span> <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">Boolean</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ThreadCallable</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">            System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot;---&gt;&quot;</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</span><br><span class="line">        ThreadCallable callable1 = <span class="keyword">new</span> ThreadCallable(<span class="string">&quot;1号&quot;</span>);</span><br><span class="line">        ThreadCallable callable2 = <span class="keyword">new</span> ThreadCallable(<span class="string">&quot;2号&quot;</span>);</span><br><span class="line">        ThreadCallable callable3 = <span class="keyword">new</span> ThreadCallable(<span class="string">&quot;3号&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//创建执行服务</span></span><br><span class="line">        ExecutorService service = Executors.newFixedThreadPool(<span class="number">3</span>);</span><br><span class="line">        <span class="comment">//提交执行</span></span><br><span class="line">        Future&lt;Boolean&gt; r1 = service.submit(callable1);</span><br><span class="line">        Future&lt;Boolean&gt; r2 = service.submit(callable2);</span><br><span class="line">        Future&lt;Boolean&gt; r3 = service.submit(callable3);</span><br><span class="line">        <span class="comment">//获取结果</span></span><br><span class="line">        <span class="keyword">boolean</span> res1 = r1.get();</span><br><span class="line">        <span class="keyword">boolean</span> res2 = r2.get();</span><br><span class="line">        <span class="keyword">boolean</span> res3 = r3.get();</span><br><span class="line">        <span class="comment">//关闭服务</span></span><br><span class="line">        service.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>运行结果</p>
+<img src="https://i.loli.net/2021/05/09/93g51MuXm4hVHZw.png" alt="image-20210509171345352" style="zoom:50%;"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>JAVA</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用Volley请求网络数据以及Glide图片加载库的使用</title>
     <url>/2021/05/08/%E4%BD%BF%E7%94%A8Volley%E8%AF%B7%E6%B1%82%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE/</url>
     <content><![CDATA[<h2 id="Volley-与-Glide、下拉刷新"><a href="#Volley-与-Glide、下拉刷新" class="headerlink" title="Volley 与 Glide、下拉刷新"></a>Volley 与 Glide、下拉刷新</h2><blockquote>
@@ -787,7 +843,7 @@
 <li>函数名必须相同</li>
 <li>参数列表必须不同（个数不同，类型不同，参数类型的排列顺序不同）</li>
 <li>返回类型 可以相同 可以不同</li>
-<li>仅 返回类型不同 不能构成方法的重载</li>
+<li><strong>仅 返回类型不同 不能构成方法的重载</strong></li>
 <li>重载是发生在编译时，因为编译器可以根据参数的类型类选择使用哪种方法</li>
 </ol>
 <h4 id="4-重写"><a href="#4-重写" class="headerlink" title="4. 重写"></a>4. 重写</h4><p>​        重载 与 重写 名字相似但  两者是完全不同的关系，</p>
@@ -796,16 +852,13 @@
 <li>重写的方法必须要和父类保持一致，包括返回值类型，方法名，参数列表</li>
 </ol>
 <h4 id="5-类中初始化的顺序"><a href="#5-类中初始化的顺序" class="headerlink" title="5. 类中初始化的顺序"></a>5. 类中初始化的顺序</h4><ol>
-<li><p>静态属性    初始化</p>
-</li>
-<li><p>静态方法块初始化</p>
-</li>
-<li><p>普通属性    初始化</p>
-</li>
-<li><p>普通方法块初始化</p>
-</li>
-<li><p>构造函数    初始化<br> 例：</p>
-</li>
+<li>静态属性    初始化</li>
+<li>静态方法块初始化</li>
+<li>普通属性    初始化</li>
+<li>普通方法块初始化</li>
+<li>构造函数    初始化</li>
+<li>普通方法</li>
+<li>例：</li>
 </ol>
   <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClass</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">//静态属性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String staticField = getStaticField();</span><br><span class="line">    <span class="comment">//静态方法块</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(staticField);</span><br><span class="line">        System.out.println(<span class="string">&quot;静态方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//普通属性</span></span><br><span class="line">    <span class="keyword">private</span> String field=getField();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//普通方法块</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;普通方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//构造方法</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyClass</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;构造函数初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getField</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        String filed = <span class="string">&quot;普通属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> filed;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getStaticField</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        String statiFiled = <span class="string">&quot;静态属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> statiFiled;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        MyClass myClass=<span class="keyword">new</span> MyClass();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//打印结果</span></span><br><span class="line">    静态属性初始化</span><br><span class="line">	静态方法块初始化</span><br><span class="line">	普通方法块初始化</span><br><span class="line">	构造函数初始化</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -827,7 +880,7 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String name = <span class="string">&quot;Outter&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> //只有<span class="title">public</span> 修饰符</span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Inner为测试而生！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这种内部类的实例化方法 是：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Outter.Inner inner=<span class="keyword">new</span> Outter().n<span class="function">ew <span class="title">Inner</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Outter.Inner inner=<span class="keyword">new</span> Outter().<span class="function">new <span class="title">Inner</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
 
 <p>而被<code>static</code> 修饰了的内部类 是如下形式</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String name = <span class="string">&quot;Outter&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticInner</span> //内部类被 <span class="title">static</span>修饰</span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;StaticInner为测试而生！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -857,7 +910,7 @@
 <li>私有方法</li>
 </ul>
 </li>
-<li>接口只能使用 <code>public</code> <code>defaylt</code> 修饰</li>
+<li>接口只能使用 <code>public</code> <code>default</code> 修饰，default是缺省值，表示具有包内访问权限控制</li>
 <li>接口不能被实例化</li>
 <li>接口的实现类 必须将接口中的抽象方法重写 否则 该类为抽象类</li>
 </ol>
@@ -873,7 +926,7 @@
 <li>在同一个包下，创建Main class ，接口，以及 接口的实现类 三个文件</li>
 <li>在同一个.java文件下 ，在Main.class ｛｝外部 创建 一个实现类 和接口</li>
 <li>在同一个.java文件下，在Main.class｛｝内部  pswm 外部 创建一个静态外部类，接口还是在Main.class｛｝外部</li>
-<li>在同一个.java文件下，在Main.class｛｝内部  pswm 内部 创建一个内部类，接口还是在Main.class｛｝外部</li>
+<li>在同一个.java文件下，在Main.class｛｝内部  pswm 内部 创建一个局部内部类，接口还是在Main.class｛｝外部</li>
 <li>在同一个.java文件下，在Main.class｛｝内部  pswm 内部  创建一个匿名内部类，接口同上</li>
 <li>使用Lambda表达式（代码如下）</li>
 </ul>
@@ -891,6 +944,7 @@
 </ol>
 <h4 id="11-多线程编程"><a href="#11-多线程编程" class="headerlink" title="11. 多线程编程"></a>11. 多线程编程</h4><ol>
 <li><p>thread中.start() 与 .run（）方法的区别？</p>
+<p><img src="https://i.loli.net/2021/05/09/qT8zSK7IbNDj5VR.png" alt="image-20210509160506254"></p>
 <ul>
 <li><p>.start()：用start方法来启动线程，真正实现了多线程运行，这时无需等待run方法体中的代码执行完毕而直接继续执行后续的代码。通过调用Thread类的 start()方法来启动一个线程，这时此线程处于就绪（可运行）状态，并没有运行，一旦得到cpu时间片，就开始执行run()方法，这里的run()方法 称为线程体，它包含了要执行的这个线程的内容，Run方法运行结束，此线程随即终止。</p>
 </li>
@@ -933,6 +987,71 @@
 </li>
 </ul>
 </li>
+</ol>
+<h4 id="12-与-equals"><a href="#12-与-equals" class="headerlink" title="12. == 与 equals()"></a>12. == 与 equals()</h4><ol>
+<li>==是运算符、.equals()是方法（来自于父类Object）</li>
+<li>使用==比较两个对象的内存地址是否相同。使用.equals()是比较两个对象的内容是否相同，比较值</li>
+<li>如果没有重写.equals()，仍然比较的是地址</li>
+</ol>
+<p>更加具体而言：</p>
+<ul>
+<li><p>通过==比较基本数据类型</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    <span class="comment">// integer-type </span></span><br><span class="line">    System.out.println(<span class="number">10</span> == <span class="number">20</span>); </span><br><span class="line"></span><br><span class="line">    <span class="comment">// char-type </span></span><br><span class="line">    System.out.println(<span class="string">&#x27;a&#x27;</span> == <span class="string">&#x27;b&#x27;</span>); </span><br><span class="line"></span><br><span class="line">    <span class="comment">// char and double type </span></span><br><span class="line">    System.out.println(<span class="string">&#x27;a&#x27;</span> == <span class="number">97.0</span>); </span><br><span class="line"></span><br><span class="line">    <span class="comment">// boolean type </span></span><br><span class="line">    System.out.println(<span class="keyword">true</span> == <span class="keyword">true</span>); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">  输出结果：</span><br><span class="line">      <span class="keyword">false</span></span><br><span class="line">      <span class="keyword">false</span></span><br><span class="line">      <span class="keyword">true</span></span><br><span class="line">      <span class="keyword">true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>通过==比较自定义数据类型</p>
+<p>前提 需要保证两个对象的类型是相同的 或者 是父类子类之间的关系，否则会产生编译错误</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    Thread t = <span class="keyword">new</span> Thread(); </span><br><span class="line">    Object o = <span class="keyword">new</span> Object(); </span><br><span class="line">    String s = <span class="keyword">new</span> String(<span class="string">&quot;GEEKS&quot;</span>); </span><br><span class="line"></span><br><span class="line">    System.out.println(t == o); </span><br><span class="line">    System.out.println(o == s); </span><br><span class="line"></span><br><span class="line">    <span class="comment">// Uncomment to see error  </span></span><br><span class="line">    System.out.println(t==s); </span><br><span class="line">&#125; </span><br><span class="line">输出结果：</span><br><span class="line">    <span class="keyword">false</span></span><br><span class="line">    <span class="keyword">false</span></span><br><span class="line">    <span class="comment">//error</span></span><br></pre></td></tr></table></figure></li>
+<li><p>equals()</p>
+<p>equals用来比较的是两个对象的内容是否相等，由于所有的类都是继承自java.lang.Object类的，所以适用于所有对象，如果没有对该方法进行覆盖的话，调用的仍然是Object类中的方法，而Object中的equals方法返回的却是==的判断。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">quals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">this</span> == obj);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>特殊情况 Stirng s=”abc” 与 String s=new String(“abc”)</p>
+<p>String s=”abce”是一种非常特殊的形式,和new 有本质的区别。它是java中唯一不需要new 就可以产生对象的途径。以String s=”abce”;形式赋值在java中叫直接量,它是在常量池中而不是象new一样放在压缩堆中。这种形式的字符串，在JVM内部发生字符串拘留，即当声明这样的一个字符串后，JVM会在常量池中先查找有有没有一个值为”abcd”的对象,如果有,就会把它赋给当前引用.即原来那个引用和现在这个引用指点向了同一对象,如果没有,则在常量池中新创建一个”abcd”,下一次如果有String s1 = “abcd”;又会将s1指向”abcd”这个对象,即以这形式声明的字符串,只要值相等,任何多个引用都指向同一对象.而String s = new String(“abcd”);和其它任何对象一样.每调用一次就产生一个对象，只要它们调用。</p>
+<p>　　也可以这么理解: String str = “hello”; 先在内存中找是不是有”hello”这个对象,如果有，就让str指向那个”hello”.如果内存里没有”hello”，就创建一个新的对象保存”hello”. String str=new String (“hello”) 就是不管内存里是不是已经有”hello”这个对象，都新建一个对象保存”hello”。</p>
+</li>
+</ul>
+<h4 id="13-集合"><a href="#13-集合" class="headerlink" title="13. 集合"></a>13. 集合</h4><p><img src="https://i.loli.net/2021/05/10/zBebs4LuZaHC5oP.png" alt="image-20210510214432749"></p>
+<p><img src="https://i.loli.net/2021/05/10/KMCPV4iw3bqjYge.png" alt="image-20210510220226119"></p>
+<ol>
+<li><p>ArrayList</p>
+<ul>
+<li><p>实现了List接口的可扩容数组（动态数组），基于数组实现</p>
+</li>
+<li><p>线程不安全容器，代替使用：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List list = Collections.synchronizedList(<span class="keyword">new</span> ArrayList(...))</span><br></pre></td></tr></table></figure></li>
+<li></li>
+</ul>
+</li>
+<li><p>Vector</p>
+<ul>
+<li>Vector同 ArrayList一样，都是基于数组实现的，只不过 Vector是一个线程安全的容器，它对内部的每个方法都简单粗暴的上锁，避免多线程引起的安全性问题，但是通常这种同步方式需要的开销比较大，因此，访问元素的效率要远远低于 ArrayList</li>
+<li>还有一点在于扩容上， ArrayList扩容后的数组长度会增加50%，而 Vector的扩容长度后数组会增加一倍。</li>
+</ul>
+</li>
+<li><p>LinkedList</p>
+<ul>
+<li><p>双向链表实现，允许存储null</p>
+</li>
+<li><p>不安全的容器，必须加锁 或者 使用</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List list = Collections.synchronizedList(<span class="keyword">new</span> LinkedList(...))</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>Stack</p>
+<ul>
+<li><p>LIFO 后进先出</p>
+</li>
+<li><p>继承自Vector 所以是线程安全的容器</p>
+</li>
+<li><p>构造方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Deque&lt;Integer&gt; stack = <span class="keyword">new</span> ArrayDeque&lt;Integer&gt;()</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>HashMap</p>
+<ul>
+<li>HashSet是一个利用哈希表原理来存储元素的集合，允许存放null</li>
+<li>非线程安全，HashTable是线程安全的容器</li>
+<li>性能影响因素：初始容量以及加载因子</li>
+</ul>
+</li>
+<li></li>
 </ol>
 ]]></content>
       <categories>
@@ -1005,8 +1124,8 @@
         <category>学习笔记</category>
       </categories>
       <tags>
-        <tag>安卓开发</tag>
         <tag>面试</tag>
+        <tag>安卓开发</tag>
       </tags>
   </entry>
   <entry>
@@ -1050,8 +1169,8 @@
         <category>面试</category>
       </categories>
       <tags>
-        <tag>安卓开发</tag>
         <tag>面试</tag>
+        <tag>安卓开发</tag>
       </tags>
   </entry>
   <entry>
@@ -1086,8 +1205,8 @@
         <category>面试</category>
       </categories>
       <tags>
-        <tag>安卓开发</tag>
         <tag>面试</tag>
+        <tag>安卓开发</tag>
       </tags>
   </entry>
   <entry>
