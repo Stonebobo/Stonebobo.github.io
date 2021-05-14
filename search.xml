@@ -644,6 +644,46 @@
 <li>onstart</li>
 <li>onresume</li>
 </ol>
+<p>当由活动A 点击Button 跳转到 活动B时：活动A与活动B经历的生命周期</p>
+<ol>
+<li><p>A–&gt;onCreate: </p>
+</li>
+<li><p>A–&gt;onStart: </p>
+</li>
+<li><p>A–&gt;onResume: </p>
+<p>点击跳转</p>
+</li>
+<li><p>A–&gt;onPause: </p>
+</li>
+<li><p>B–&gt;onCreate: </p>
+</li>
+<li><p>B–&gt;onStart: </p>
+</li>
+<li><p>B–&gt;onResume: </p>
+</li>
+<li><p>A–&gt;onStop: </p>
+<p>点击返回</p>
+</li>
+<li><p>B–&gt;onPause: </p>
+</li>
+<li><p>A–&gt;onRestart: </p>
+</li>
+<li><p>A–&gt;onStart: </p>
+</li>
+<li><p>A–&gt;onResume: </p>
+</li>
+<li><p>B–&gt;onStop: </p>
+</li>
+<li><p>B–&gt;onDestroy: </p>
+<p>再次点击返回</p>
+</li>
+<li><p>A–&gt;onPause: </p>
+</li>
+<li><p>A–&gt;onStop:</p>
+</li>
+<li><p>A–&gt;Destroy:</p>
+</li>
+</ol>
 <p>禁止屏幕反转<br>在 AndoridManifest 的 Activity 中 设置   android:screenOrientation=”portrait”</p>
 <ol>
 <li>portrait : 竖直模式</li>
@@ -880,7 +920,7 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String name = <span class="string">&quot;Outter&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> //只有<span class="title">public</span> 修饰符</span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Inner为测试而生！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这种内部类的实例化方法 是：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Outter.Inner inner=<span class="keyword">new</span> Outter().<span class="function">new <span class="title">Inner</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Outter.Inner inner=<span class="keyword">new</span> Outter().n<span class="function">ew <span class="title">Inner</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
 
 <p>而被<code>static</code> 修饰了的内部类 是如下形式</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String name = <span class="string">&quot;Outter&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticInner</span> //内部类被 <span class="title">static</span>修饰</span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;StaticInner为测试而生！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1017,7 +1057,8 @@
 </li>
 <li><p>线程不安全容器，代替使用：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List list = Collections.synchronizedList(<span class="keyword">new</span> ArrayList(...))</span><br></pre></td></tr></table></figure></li>
-<li></li>
+<li><p> ArrayList扩容后的数组长度会增加50%（查看源码得知）</p>
+</li>
 </ul>
 </li>
 <li><p>Vector</p>
@@ -1046,11 +1087,80 @@
 </li>
 <li><p>HashMap</p>
 <ul>
-<li>HashSet是一个利用哈希表原理来存储元素的集合，允许存放null</li>
-<li>非线程安全，HashTable是线程安全的容器</li>
-<li>性能影响因素：初始容量以及加载因子</li>
+<li><p>HashSet是一个利用哈希表原理来存储元素的集合，允许存放null</p>
+</li>
+<li><p>非线程安全，HashTable是线程安全的容器</p>
+</li>
+<li><p>性能影响因素：初始容量以及加载因子</p>
+</li>
+<li><p>根据阿里巴巴Java开发手册上建议HashMap初始化时设置已知的大小，如果不超过16个，那么设置成默认大小16：</p>
+<p>initialCapacity = (需要存储的元素个数 / 负载因子) + 1。注意负载因子（即loader factor）默认为0.75， 如果暂时无法确定初始值大小，请设置为16（即默认值）。</p>
+</li>
 </ul>
 </li>
+<li></li>
+</ol>
+<h4 id="14-泛型"><a href="#14-泛型" class="headerlink" title="14. 泛型"></a>14. 泛型</h4><ol>
+<li><p>泛型类</p>
+<p>一个普通的类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>泛型类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    E sex;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(E a)</span> </span>&#123;</span><br><span class="line">        System.out.println(a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>若实例化一个泛型类对象时，没有指定泛型的类型，会默认为Object类型</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1.泛型类不指定类型时 默认是Object</span></span><br><span class="line">Father father = <span class="keyword">new</span> Father();</span><br><span class="line">father.add(<span class="string">&quot;abc&quot;</span>);</span><br><span class="line">father.add(<span class="number">1</span>);</span><br><span class="line">father.add(<span class="number">1.2</span>);</span><br></pre></td></tr></table></figure>
+
+<p>若实例化一个泛型类对象时，指定了泛型的类型，那么 操作的数据必须时该类型</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//2.泛型类指定类型时, 类中的E 就都是该类型</span></span><br><span class="line">Father&lt;Integer&gt; father1 = <span class="keyword">new</span> Father&lt;&gt;();</span><br><span class="line">father1.add(<span class="number">1</span>);</span><br><span class="line"><span class="comment">//        father1.add(&quot;2&quot;);报错</span></span><br></pre></td></tr></table></figure></li>
+<li><p>继承自一个泛型类的情况</p>
+<p>一个子类继承自一个泛型类父类</p>
+<p>若指定了父类中 泛型的类型，子类就不需要是泛型类了 </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//父类指定泛型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son2</span> <span class="keyword">extends</span> <span class="title">Father</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//3.父类指定泛型类型，继承的子类就不需要指定泛型类型了 可以直接使用</span></span><br><span class="line">Son2 son2 = <span class="keyword">new</span> Son2();</span><br><span class="line">son2.add(<span class="number">1</span>);</span><br><span class="line"><span class="comment">//        son2.add(&quot;1&quot;);//报错</span></span><br></pre></td></tr></table></figure>
+
+<p>若没有指定父类中的泛型的类型，子类就需要变成泛型类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">        <span class="comment">//5. 父类不指定泛型类 子类指定泛型类</span></span><br><span class="line">        Son&lt;Integer&gt; son1 = <span class="keyword">new</span> Son&lt;&gt;();</span><br><span class="line">        son1.add(<span class="number">1</span>);</span><br><span class="line"><span class="comment">//        son1.add(1.0);//报错</span></span><br><span class="line">       <span class="comment">//父类不指定泛型类 子类也不指定泛型类，那么E就默认是Object</span></span><br><span class="line">        Son son3 = <span class="keyword">new</span> Son();</span><br><span class="line">        son3.add(<span class="number">1</span>);</span><br><span class="line">        son3.add(<span class="number">1.0</span>);</span><br><span class="line">        son3.add(<span class="string">&quot;1&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>细节</p>
+<ol>
+<li><p>&lt;&gt;不一定只有一个泛型，可以有多个</p>
+</li>
+<li><p>泛型类的构造器的写法，不带泛型类型</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    E sex;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//构造器错误写法</span></span><br><span class="line">    <span class="keyword">public</span> Father&lt;E&gt;()&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//构造器正确写法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Father</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(E a)</span> </span>&#123;</span><br><span class="line">        System.out.println(a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>不同的泛型类型 但是是同一个集合类 ，不可以相互赋值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">List&lt;String&gt; list2 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="comment">//        list = list2;//报错</span></span><br></pre></td></tr></table></figure></li>
+<li><p>泛型类中的静态方法 不允许有泛型参数</p>
+<p>这是因为静态方法是随着类的加载而被加载，先于对象存在，而泛型的参数是实例化对象时才去指定，也就是加载顺序不同</p>
+</li>
+<li><p>不能直接使用E[]  来创建数组</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//        E[] arr = new E[10];//错误</span></span><br><span class="line">        E[] arr = (E[]) <span class="keyword">new</span> Object[<span class="number">10</span>];</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>泛型方法</p>
+<ul>
+<li><p>什么是泛型方法？</p>
+<p>并不是形参当中带了 泛型的参数就是泛型方法了 ，要求这个方法的泛型的参数类型要与当前类的泛型参数无关</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestGeneric02</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//这并不是泛型方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">(E m)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这才是泛型方法，T的确定是在调用这个方法的时候 才确定下来</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">b</span><span class="params">(T n)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>泛型方法对应的那个泛型参数类型 和 当前 所在的这个类是否是泛型类，泛型是啥 无关，下面这个类不是泛型类 但仍然可以包含泛型方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestGeneric02</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">b</span><span class="params">(T n)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>泛型方法可以是静态方法，泛型类中的带了泛型类型的方法不能是静态方法</p>
+<p>这是因为泛型方法中 泛型参数与所在类是否是泛型类 泛型的参数无关。</p>
+<p>虽然静态方法优先于对象的加载，但是泛型方法的泛型类型是在调用时才被确定的</p>
+</li>
+</ul>
+</li>
+<li><p>泛型参数中的继承关系</p>
+<p>多态的一种体现：父类指针 指向子类对象，如下面代码块1</p>
+<p>但是 在下面的代码块2 String 虽然是Object类的子类 但是 List<String> 与 List<Object> 并没有继承关系，List<String> 与 List<Object> 是同级关系 底层数据的存储 都是Object数组 </Object></String></Object></String></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Object[] objects = <span class="keyword">new</span> Object[<span class="number">10</span>];</span><br><span class="line">Object[] objects1 = <span class="keyword">new</span> Object[<span class="number">10</span>];</span><br><span class="line">String[] strings = <span class="keyword">new</span> String[<span class="number">10</span>];</span><br><span class="line">String[] strings1 = <span class="keyword">new</span> String[<span class="number">10</span>];</span><br><span class="line">objects = strings;<span class="comment">//多态的一种体现 父类-》子类</span></span><br><span class="line">objects = objects1;</span><br><span class="line">strings = strings1;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; stringList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">List&lt;Object&gt; objectList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">//        objectList = stringList;//报错</span></span><br></pre></td></tr></table></figure></li>
+<li><p>泛型受限</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">        <span class="comment">/*泛型的上限 定义了上限 </span></span><br><span class="line"><span class="comment">        List&lt;? extends Person&gt; 是 List&lt;Person&gt; 的父类 以及 List&lt;Person子类&gt; 的父类</span></span><br><span class="line"><span class="comment">        如果想要使用 父类 = 子类对象 子类类型不能超过 Person</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">         </span><br><span class="line">        List&lt;? extends Person&gt; list = <span class="keyword">null</span>;</span><br><span class="line"><span class="comment">//        list = objectList;报错</span></span><br><span class="line">        list = personList;<span class="comment">//正确 父类 -&gt;子类</span></span><br><span class="line">        list = studentList;<span class="comment">//正确 父类 -&gt;子类</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*泛型的下限</span></span><br><span class="line"><span class="comment">        List&lt;? super Person&gt; 是 List&lt;Person&gt; 的父类 以及List&lt;Person 父类&gt; 的 父类</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">         </span><br><span class="line">        List&lt;? <span class="keyword">super</span> Person&gt; list1 = <span class="keyword">null</span>;</span><br><span class="line">        list1 = objectList;<span class="comment">//正确 父类 -&gt;子类</span></span><br><span class="line">        list1 = personList;<span class="comment">//正确 父类 -&gt;子类</span></span><br><span class="line"><span class="comment">//        list1 = studentList;//报错</span></span><br></pre></td></tr></table></figure></li>
+<li><p>泛型通配符</p>
+<p>List&lt;?&gt; list</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test02</span> </span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    以下 前三个方法冲突 List&lt;Object&gt; List&lt;String&gt; List&lt;Integer&gt; 是同级关系 相当于一个方法了</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">(List&lt;Object&gt; list)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">(List&lt;String&gt; list)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">(List&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">a</span><span class="params">(List&lt;?&gt; list)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(Object o:list)&#123;</span><br><span class="line">            System.out.println(o);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 <li></li>
 </ol>
 ]]></content>
@@ -1124,8 +1234,8 @@
         <category>学习笔记</category>
       </categories>
       <tags>
-        <tag>面试</tag>
         <tag>安卓开发</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
@@ -1169,8 +1279,8 @@
         <category>面试</category>
       </categories>
       <tags>
-        <tag>面试</tag>
         <tag>安卓开发</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
@@ -1205,8 +1315,8 @@
         <category>面试</category>
       </categories>
       <tags>
-        <tag>面试</tag>
         <tag>安卓开发</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
