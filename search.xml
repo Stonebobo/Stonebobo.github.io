@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Android开发 | Android11版本新特性</title>
+    <url>/2021/05/28/Android%E5%BC%80%E5%8F%91--Android11%E7%89%88%E6%9C%AC%E6%96%B0%E7%89%B9%E6%80%A7/</url>
+    <content><![CDATA[<h2 id="Android11版本新特性"><a href="#Android11版本新特性" class="headerlink" title="Android11版本新特性"></a>Android11版本新特性</h2><blockquote>
+<p>Android 11版本中 对权限部分做了较大的变化</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="1-取消-拒绝-并不在询问选项"><a href="#1-取消-拒绝-并不在询问选项" class="headerlink" title="1. 取消 拒绝 并不在询问选项"></a>1. 取消 拒绝 并不在询问选项</h4><p>​    但不意味着没有 永久拒绝了，取而代之的是 如果一个权限用户拒绝了两次 那么Android系统会自动将其视为“拒绝并不再询问”来处理</p>
+<h4 id="2-引入权限过期机制"><a href="#2-引入权限过期机制" class="headerlink" title="2. 引入权限过期机制"></a>2. 引入权限过期机制</h4><p>​    本来用户授予了应用程序某个权限，该权限会一直有效，现在如果某应用程序很长时间没有启动，Android系统会自动收回用户授予的权限，下次启动需要重新请求授权。</p>
+<h4 id="3-针对摄像机、麦克风、地理定位这3种权限提供了单次授权的选项"><a href="#3-针对摄像机、麦克风、地理定位这3种权限提供了单次授权的选项" class="headerlink" title="3.针对摄像机、麦克风、地理定位这3种权限提供了单次授权的选项"></a>3.针对摄像机、麦克风、地理定位这3种权限提供了单次授权的选项</h4><p>​    Android 11针对摄像机、麦克风、地理定位这3种权限提供了单次授权的选项。因为这3种权限都是属于隐私敏感的权限，如果像过去一样用户同意一次就代表永久授权，可能某些恶意应用会无节制地采集用户信息。在Android 11中请求摄像机权限，界面如下图所示</p>
+<img src="https://i.loli.net/2021/05/28/mt85Gu2SPOJIAVB.png" alt="image-20210528201655386" style="zoom:50%;">
+
+<h4 id="4-引入后台服务属性（需要适配）"><a href="#4-引入后台服务属性（需要适配）" class="headerlink" title="4.引入后台服务属性（需要适配）"></a>4.引入后台服务属性（需要适配）</h4><p>​    Android 10系统首次引入了android:foregroundServiceType属性，如果你想要在前台Service中获取用户的位置信息，那么必须在AndroidManifest.xml中进行以下配置声明：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">service</span> <span class="attr">...</span> </span></span><br><span class="line"><span class="tag">		<span class="attr">android:foregroundServiceType</span>=<span class="string">&quot;location&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    而在Android 11系统中，这个要求扩展到了摄像机和麦克风权限。也就是说，如果你想要在前台Service中获取设备的摄像机和麦克风数据，那么也需要在AndroidManifest.xml中进行声明：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">service</span> <span class="attr">...</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:foregroundServiceType</span>=<span class="string">&quot;location|camera|microphone&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    </p>
+<h4 id="5-新的权限-ACCESS-BACKGROUND-LOCATION-（需要适配）"><a href="#5-新的权限-ACCESS-BACKGROUND-LOCATION-（需要适配）" class="headerlink" title="5. 新的权限 ACCESS_BACKGROUND_LOCATION （需要适配）"></a>5. 新的权限 ACCESS_BACKGROUND_LOCATION （需要适配）</h4><p>​    Android 10系统中引入了一个新的权限：ACCESS_BACKGROUND_LOCATION，用于允许应用程序在后台请求设备的位置信息。不过这个权限是不可以单独申请的，而是要和ACCESS_FINE_LOCATION或ACCESS_COARSE_LOCATION一起申请才行。这个也很好理解，怎么可能连前台请求位置信息都没同意呢，就允许在后台请求位置信息了。</p>
+<p>在Android 10系统中，如果我们同时申请前台和后台定位权限，那么将会出现如下界面：</p>
+<img src="https://img-blog.csdnimg.cn/20200614154908232.png" style="zoom:25%;">
+
+<p>可以看到，界面上的选项有些不同，“始终允许”表示同时允许了前台和后台定位权限，“仅在使用此应用时允许”表示只允许前台定位权限，“拒绝”表示都不允许</p>
+<p>但是如果我们在Android 11系统中同时申请前台和后台定位权限会怎么样呢？很遗憾地告诉你，会崩溃。</p>
+<p>因为Android 11系统要求，ACCESS_BACKGROUND_LOCATION权限必须单独申请，并且在那之前，应用程序还必须已经获得了ACCESS_FINE_LOCATION或ACCESS_COARSE_LOCATION权限才行。</p>
+<h4 id="6-权限申请对话框-允许取消"><a href="#6-权限申请对话框-允许取消" class="headerlink" title="6. 权限申请对话框 允许取消"></a>6. 权限申请对话框 允许取消</h4><p>​    权限申请对话框 在Android 11 中允许取消了，如果用户取消了权限对话框，将会视为一次拒绝。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>安卓开发</tag>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>java多线程编程</title>
     <url>/2021/05/09/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<h2 id="JAVA多线程编程"><a href="#JAVA多线程编程" class="headerlink" title="JAVA多线程编程"></a>JAVA多线程编程</h2><blockquote>
@@ -920,7 +957,7 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String name = <span class="string">&quot;Outter&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> //只有<span class="title">public</span> 修饰符</span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Inner为测试而生！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这种内部类的实例化方法 是：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Outter.Inner inner=<span class="keyword">new</span> Outter().n<span class="function">ew <span class="title">Inner</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Outter.Inner inner=<span class="keyword">new</span> Outter().<span class="function">new <span class="title">Inner</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
 
 <p>而被<code>static</code> 修饰了的内部类 是如下形式</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Outter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String name = <span class="string">&quot;Outter&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticInner</span> //内部类被 <span class="title">static</span>修饰</span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;StaticInner为测试而生！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
